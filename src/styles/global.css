@@ -1,0 +1,47 @@
+@import "./normalize.css";
+@import "./variables.css";
+@import "./fonts.css";
+
+body {
+   display: flex;
+   flex-direction: column;
+}
+
+main {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-grow: 1;
+   width: 100%;
+   min-height: 100vh;
+   background-color: var(--base-dark);
+
+   font-family: "Noto Sans", "serif";
+}
+
+a,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+   transition-duration: var(--transition-duration);
+}
+
+::-webkit-scrollbar {
+   width: 6px;
+}
+
+::-webkit-scrollbar-track {
+   background: var(--base-dark);
+}
+
+::-webkit-scrollbar-thumb {
+   background: var(--base-light);
+   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+   border: 1px solid var(--color-light-10);
+}

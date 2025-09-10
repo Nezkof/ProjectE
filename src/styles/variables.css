@@ -1,0 +1,9 @@
+:root {
+   --base-dark: #030303;
+   --base-light: #ffffff;
+
+   --color-light-10: #9f9f9f;
+   --color-light-20: #333333;
+
+   --transition-duration: 0.2s;
+}

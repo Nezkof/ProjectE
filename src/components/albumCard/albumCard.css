@@ -1,0 +1,62 @@
+.album-card {
+   display: flex;
+   padding: 20px 15px;
+   align-items: center;
+}
+
+.album-card__info {
+   display: flex;
+   flex-direction: column;
+   column-gap: 5px;
+}
+
+.album-card:not(:last-child) {
+   border-bottom: 1px solid var(--color-light-20);
+}
+
+.album-card__cover {
+   grid-area: cover;
+   width: 68px;
+   margin-right: 15px;
+}
+
+.album-card__label {
+   grid-area: label;
+   color: var(--base-light);
+   font-weight: 600;
+   font-size: 22px;
+}
+
+.album-card__author {
+   grid-area: author;
+   color: var(--color-light-10);
+   font-weight: 600;
+   font-size: 20px;
+}
+
+.album-card__drag-button {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: var(--base-light);
+   padding: 10px;
+   border: 0;
+   background: none;
+
+   margin-left: auto;
+
+   svg {
+      stroke: var(--base-light);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+   }
+}
+
+.album-card__number {
+   color: var(--base-light);
+   margin-right: 20px;
+   font-size: 22px;
+   width: 40px;
+   text-align: center;
+}

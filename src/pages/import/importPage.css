@@ -1,0 +1,23 @@
+.import-page {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   row-gap: 20px;
+   width: 100%;
+   padding-inline: 250px;
+}
+
+.import-page__button {
+   background-color: var(--base-light);
+   border-radius: 10px;
+   border: 0;
+   font-size: 28px;
+
+   width: 100%;
+   padding: 10px 0;
+}
+
+.import-page__button:hover {
+   background-color: #d3d3d3;
+}

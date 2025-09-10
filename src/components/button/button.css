@@ -1,0 +1,16 @@
+.control-button {
+   display: flex;
+   background-color: var(--base-light);
+   border-radius: 10px;
+   padding: 10px;
+   border: 0;
+}
+
+.control-button:hover {
+   background-color: #d3d3d3;
+}
+
+.control-button__image {
+   width: 36px;
+   height: 36px;
+}

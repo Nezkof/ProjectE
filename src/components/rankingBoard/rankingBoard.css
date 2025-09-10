@@ -1,0 +1,6 @@
+.ranking-board {
+   display: flex;
+   flex-direction: column;
+   row-gap: 0;
+   width: 100%;
+}

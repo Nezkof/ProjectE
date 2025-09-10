@@ -1,0 +1,81 @@
+.album-cover {
+   position: relative;
+   width: 766px;
+}
+
+.album-cover:hover {
+   .album-cover__link {
+      display: flex;
+      opacity: 100;
+   }
+}
+
+.album-cover__link {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   border-radius: 10px;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   opacity: 0;
+   background-color: rgba(0, 0, 0, 0.6);
+   transition-duration: var(--transition-duration);
+
+   svg {
+      fill: white;
+      width: 150px;
+      stroke: none;
+   }
+}
+
+.album-cover__img {
+   border-radius: 10px;
+}
+
+.album-cover--small {
+   .album-cover__img {
+      border-radius: 5px;
+   }
+
+   .album-cover__link {
+      border-radius: 5px;
+      svg {
+         width: 30px;
+      }
+   }
+}
+
+.album-cover--medium {
+   width: 600px;
+}
+
+.album-cover--small-play {
+   .album-cover__link {
+      width: 10%;
+      height: 10%;
+      border-radius: 100%;
+
+      bottom: 30px;
+      left: 30px;
+
+      svg {
+         width: 25px;
+      }
+   }
+
+   .album-cover__link:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+   }
+}
+
+.album-cover--hover {
+   transition-duration: var(--transition-duration);
+}
+
+.album-cover--hover:hover {
+   scale: 1.01;
+   cursor: pointer;
+}
