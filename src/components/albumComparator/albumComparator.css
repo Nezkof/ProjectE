@@ -12,3 +12,19 @@
    color: var(--color-light-10);
    align-self: flex-end;
 }
+
+.album_comparator__item-title {
+   color: var(--base-light);
+   text-align: center;
+   margin-top: 20px;
+}
+
+.album_comparator__item-artist {
+   color: var(--color-light-10);
+   text-align: center;
+}
+
+.album-comparator__select-btn {
+   background: none;
+   border: none;
+}

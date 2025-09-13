@@ -19,7 +19,6 @@ export function useJsonImport<T = unknown>() {
             if (typeof result === "string") {
                const parsedData: T = JSON.parse(result);
                setJsonData(parsedData);
-               console.log("JSON data:", parsedData);
             }
          } catch (err) {
             alert("Error reading JSON");

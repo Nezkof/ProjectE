@@ -2,6 +2,7 @@ import AlbumCard from "../albumCard/AlbumCard";
 import BOFGBGFM from "/covers/bo-fgbgfm.webp";
 
 import "./rating.css";
+import { useEffect } from "react";
 
 const Rating = () => {
    return (

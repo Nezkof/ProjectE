@@ -23,6 +23,7 @@
    background-color: var(--base-light);
    border: 0;
    font-size: 26px;
+   justify-self: end;
 }
 
 .ranking-board {

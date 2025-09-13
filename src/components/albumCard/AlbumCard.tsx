@@ -4,6 +4,8 @@ import AlbumCover from "../albumCover/AlbumCover";
 import "./albumCard.css";
 
 interface Props {
+   rank: number;
+   id: number;
    isDragable?: boolean;
    label: string;
    author: string;
@@ -13,12 +15,10 @@ interface Props {
 }
 
 const AlbumCard = (props: Props) => {
-   const [cardNumber, setCardNumber] = useState(1);
-
    return (
       <>
-         <li className="album-card">
-            {props.isDragable && <span className="album-card__number">{cardNumber}</span>}
+         <div className="album-card">
+            {props.isDragable && <span className="album-card__number">{props.rank}</span>}
             <AlbumCover
                className="album-card__cover album-cover--small"
                href={props.href}
@@ -44,7 +44,7 @@ const AlbumCard = (props: Props) => {
                   </svg>
                </button>
             )}
-         </li>
+         </div>
       </>
    );
 };
