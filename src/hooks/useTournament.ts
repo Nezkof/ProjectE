@@ -43,13 +43,13 @@ export function useTournament() {
    };
 
    const getLeftAlbum = () => {
-      if (albumsPairs.length === 0) return albums[0];
+      if (albumsPairs.length === 0 || currPairIdx >= albumsPairs.length) return albums[0];
 
       return albums[albumsPairs[currPairIdx][0]];
    };
 
    const getRightAlbum = () => {
-      if (albumsPairs.length === 0) return albums[1];
+      if (albumsPairs.length === 0 || currPairIdx >= albumsPairs.length) return albums[1];
 
       return albums[albumsPairs[currPairIdx][1]];
    };

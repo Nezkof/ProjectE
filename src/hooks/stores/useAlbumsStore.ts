@@ -30,9 +30,7 @@ export function useAlbumsStore(initialAlbums: Album[] = []) {
       getRankedAlbums();
    }, [evaluationMatrix]);
 
-   const updateMatrix = (i: number, j: number) => {
-      const pointsAmount = albums.length;
-
+   const updateMatrix = (i: number, j: number, pointsAmount: number = albums.length) => {
       const newMatrix = evaluationMatrix.map((row) => [...row]);
       newMatrix[i][j] += pointsAmount;
       newMatrix[j][i] += 1 / pointsAmount;
@@ -73,5 +71,33 @@ export function useAlbumsStore(initialAlbums: Album[] = []) {
 
    const clearAlbums = () => setAlbums([]);
 
-   return { albums, updateMatrix, getRankedAlbums, rankedAlbums, addAlbum, clearAlbums };
+   const getEvaluationMatrix = () => {
+      return evaluationMatrix;
+   };
+
+   const addMatrixPoints = (matrix2: number[][]) => {
+      console.log(evaluationMatrix);
+
+      const newMatrix = evaluationMatrix.map((row) => [...row]);
+
+      for (let i = 0; i < evaluationMatrix.length; ++i) {
+         for (let j = 0; j < evaluationMatrix.length; ++j) {
+            newMatrix[i][j] += matrix2[i][j];
+         }
+      }
+
+      setEvaluationMatrix(newMatrix);
+   };
+
+   return {
+      albums,
+      updateMatrix,
+      getRankedAlbums,
+      rankedAlbums,
+      addAlbum,
+      clearAlbums,
+      setEvaluationMatrix,
+      getEvaluationMatrix,
+      addMatrixPoints,
+   };
 }

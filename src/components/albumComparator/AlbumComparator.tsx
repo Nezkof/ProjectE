@@ -9,6 +9,7 @@ const AlbumComparator = () => {
 
    const handleButton = (i: number, j: number) => {
       if (getCurrPairIdx() === getPairsAmount() - 1) {
+         compareAlbums(i, j);
          window.location.href = "/";
       } else {
          compareAlbums(i, j);

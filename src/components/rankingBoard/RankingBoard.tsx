@@ -1,10 +1,14 @@
 import { useRanking } from "../../hooks/useRanking";
+import type { Album } from "../../types/types";
 import AlbumCard from "../albumCard/AlbumCard";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
-const RankingBoard = () => {
-   const { rankedAlbums, updateAlbumPosition } = useRanking();
+interface Props {
+   rankedAlbums: Album[];
+   updateAlbumPosition: (sourceIdx: number, destinationIdx: number) => void;
+}
 
+const RankingBoard = ({ rankedAlbums, updateAlbumPosition }: Props) => {
    const handleDragEnd = (result: DropResult) => {
       if (!result.destination) return;
       updateAlbumPosition(result.source.index, result.destination.index);
