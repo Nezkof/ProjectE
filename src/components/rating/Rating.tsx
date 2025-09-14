@@ -1,73 +1,29 @@
 import AlbumCard from "../albumCard/AlbumCard";
-import BOFGBGFM from "/covers/bo-fgbgfm.webp";
 
 import "./rating.css";
-import { useEffect } from "react";
+import type { Album } from "../../types/types";
 
-const Rating = () => {
+interface Props {
+   albums: Album[];
+}
+
+const Rating = (props: Props) => {
    return (
       <>
          <div className="rating-wrapper">
             {/* <div className="rating-list__mask"></div> */}
 
             <ul className="rating-list">
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
-               <AlbumCard
-                  label="Finding God Before God Finds Me"
-                  author="Bad Omens"
-                  href={BOFGBGFM}
-                  path={BOFGBGFM}
-                  alt={BOFGBGFM}
-               />
+               {props.albums.map((album, index) => (
+                  <AlbumCard
+                     rank={index + 1}
+                     label={album.title}
+                     author={album.artist}
+                     href={album.link}
+                     path={album.cover}
+                     alt={album.title}
+                  />
+               ))}
             </ul>
          </div>
       </>

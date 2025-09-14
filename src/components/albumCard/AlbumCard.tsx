@@ -4,8 +4,8 @@ import AlbumCover from "../albumCover/AlbumCover";
 import "./albumCard.css";
 
 interface Props {
-   rank: number;
-   id: number;
+   rank?: number;
+   id?: number;
    isDragable?: boolean;
    label: string;
    author: string;
@@ -18,7 +18,7 @@ const AlbumCard = (props: Props) => {
    return (
       <>
          <div className="album-card">
-            {props.isDragable && <span className="album-card__number">{props.rank}</span>}
+            {props.rank && <span className="album-card__number">{props.rank}</span>}
             <AlbumCover
                className="album-card__cover album-cover--small"
                href={props.href}

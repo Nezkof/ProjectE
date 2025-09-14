@@ -26,4 +26,8 @@
    column-gap: 100px;
 
    justify-content: space-between;
+
+   img {
+      width: 100%;
+   }
 }

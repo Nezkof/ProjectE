@@ -1,44 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { Album } from "../../types/types";
 
-export interface TournamentAlbum {
-   id: number;
-   rank: number;
-}
-
-export function useTournamentStore(initialList: TournamentAlbum[] = []) {
-   const [tournamentList, setTournamentList] = useState<TournamentAlbum[]>(initialList);
-
-   const addAlbum = (id: number) => {
-      setTournamentList((prev) => [...prev, { id, rank: prev.length + 1 }]);
+export function useTournamentStore() {
+   const loadAlbums = () => {
+      const saved = localStorage.getItem("rankedAlbums");
+      return saved ? (JSON.parse(saved) as Album[]) : [];
    };
 
-   const removeAlbum = (id: number) => {
-      setTournamentList((prev) => {
-         const filtered = prev.filter((album) => album.id !== id);
-         return filtered.map((album, index) => ({ ...album, rank: index + 1 }));
-      });
+   const [rankedAlbums, setRankedAlbums] = useState<Album[]>(loadAlbums());
+
+   useEffect(() => {
+      localStorage.setItem("rankedAlbums", JSON.stringify(rankedAlbums));
+   }, [rankedAlbums]);
+
+   const setAlbums = (ranks: number[], albums: Album[]) => {
+      const sortedAlbums = albums
+         .map((album, i) => ({ album, rank: ranks[i] }))
+         .sort((a, b) => b.rank - a.rank)
+         .map(({ album }) => album);
+
+      setRankedAlbums(sortedAlbums);
    };
 
-   const updateRank = (id: number, newRank: number) => {
-      setTournamentList((prev) => {
-         const list = [...prev];
-         const index = list.findIndex((album) => album.id === id);
-         if (index === -1) return list;
-
-         const [movedAlbum] = list.splice(index, 1);
-         list.splice(newRank - 1, 0, movedAlbum);
-
-         return list.map((album, i) => ({ ...album, rank: i + 1 }));
-      });
-   };
-
-   const clearTournament = () => setTournamentList([]);
-
-   return {
-      tournamentList,
-      addAlbum,
-      removeAlbum,
-      updateRank,
-      clearTournament,
-   };
+   return { rankedAlbums, setAlbums };
 }
