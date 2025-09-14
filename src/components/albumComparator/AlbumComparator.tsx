@@ -7,13 +7,21 @@ const AlbumComparator = () => {
    const { compareAlbums, getLeftAlbum, getRightAlbum, getCurrPairIdx, getPairsAmount } =
       useTournament();
 
+   const handleButton = (i: number, j: number) => {
+      if (getCurrPairIdx() === getPairsAmount() - 1) {
+         window.location.href = "/";
+      } else {
+         compareAlbums(i, j);
+      }
+   };
+
    return (
       <>
          <ul className="album-comparator">
             <li className="album-comparator__item">
                <button
                   className="album-comparator__select-btn"
-                  onClick={() => compareAlbums(getLeftAlbum().id, getRightAlbum().id)}
+                  onClick={() => handleButton(getLeftAlbum().id, getRightAlbum().id)}
                >
                   <AlbumCover
                      className="album-cover--small-play album-cover--medium album-cover--hover"
@@ -28,7 +36,7 @@ const AlbumComparator = () => {
             <li className="album-comparator__item">
                <button
                   className="album-comparator__select-btn"
-                  onClick={() => compareAlbums(getRightAlbum().id, getLeftAlbum().id)}
+                  onClick={() => handleButton(getRightAlbum().id, getLeftAlbum().id)}
                >
                   <AlbumCover
                      className="album-cover--small-play album-cover--medium album-cover--hover"
@@ -43,7 +51,7 @@ const AlbumComparator = () => {
          </ul>
 
          <span className="album-comparator__counter">
-            {getCurrPairIdx()} / {getPairsAmount()}
+            {getCurrPairIdx() + 1} / {getPairsAmount()}
          </span>
       </>
    );

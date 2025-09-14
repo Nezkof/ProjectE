@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
-import type { Album } from "../types/types";
 import { useAlbumsStore } from "./stores/useAlbumsStore";
-import { useTournamentStore } from "./stores/useTournamentStore";
 
 export function useTournament() {
-   const createMatrix = () =>
-      Array.from({ length: albums.length }, () => Array(albums.length).fill(0));
-
-   const { albums } = useAlbumsStore();
-   const { setAlbums } = useTournamentStore();
+   const { albums, updateMatrix } = useAlbumsStore();
 
    const [albumsPairs, setAlbumsPairs] = useState<number[][]>([]);
    const [currPairIdx, setCurrPairIdx] = useState<number>(0);
-   const [matrix, setMatrix] = useState<number[][]>(createMatrix);
 
    useEffect(() => {
       if (albums.length > 1) {
@@ -41,39 +34,12 @@ export function useTournament() {
       setCurrPairIdx(0);
    };
 
-   const rankAlbums = (mat: number[][]) => {
-      let ranks: number[] = [];
-
-      for (let i = 0; i < mat.length; ++i) {
-         let wins = 0;
-         let loses = 0;
-
-         for (let j = 0; j < mat.length; ++j) {
-            if (i === j) continue;
-            if (mat[i][j] === 1) ++wins;
-            if (mat[i][j] === 0) ++loses;
-         }
-
-         ranks.push(wins - loses);
-      }
-
-      return ranks;
-   };
-
    const compareAlbums = (i: number, j: number) => {
       i -= 1;
       j -= 1;
 
-      const newMatrix = matrix.map((row) => [...row]);
-      newMatrix[i][j] = 1;
-      setMatrix(newMatrix);
-
-      if (currPairIdx === albumsPairs.length - 1) {
-         setAlbums(rankAlbums(newMatrix), albums);
-         window.location.href = "/";
-      } else {
-         setCurrPairIdx(currPairIdx + 1);
-      }
+      updateMatrix(i, j);
+      setCurrPairIdx((prev) => prev + 1);
    };
 
    const getLeftAlbum = () => {
@@ -89,7 +55,7 @@ export function useTournament() {
    };
 
    const getCurrPairIdx = () => {
-      return currPairIdx + 1;
+      return currPairIdx;
    };
 
    const getPairsAmount = () => {
