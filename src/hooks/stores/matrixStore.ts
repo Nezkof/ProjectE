@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useAlbumsStore } from "./albumStore";
 
 interface MatrixStore {
    evaluationMatrices: number[][][];
    updateMatrix: (matrixIndex: number, newMatrix: number[][]) => void;
    addMatrix: (newMatrix: number[][]) => void;
+   removeRows: (rowsIdx: number[]) => void;
 }
 
 export const useMatrixStore = create<MatrixStore>()(
@@ -15,12 +17,7 @@ export const useMatrixStore = create<MatrixStore>()(
          updateMatrix: (matrixIndex, newMatrix) => {
             set((state) => {
                const updatedMatrices = [...state.evaluationMatrices];
-
-               if (!updatedMatrices[matrixIndex]) {
-                  updatedMatrices[matrixIndex] = newMatrix.map((row) => [...row]);
-               } else {
-                  updatedMatrices[matrixIndex] = newMatrix.map((row) => [...row]);
-               }
+               updatedMatrices[matrixIndex] = newMatrix.map((row) => [...row]);
 
                console.log(`Updated matrix for id: ${matrixIndex} expert`);
                console.log(newMatrix);
@@ -33,6 +30,21 @@ export const useMatrixStore = create<MatrixStore>()(
             set((state) => ({
                evaluationMatrices: [...state.evaluationMatrices, newMatrix.map((row) => [...row])],
             })),
+
+         removeRows: (rowsIdx: number[]) =>
+            set((state) => {
+               const updatedMatrices = state.evaluationMatrices.map((matrix) => {
+                  if (!matrix) return [];
+                  const filteredRows = matrix.filter((_, rowIndex) => !rowsIdx.includes(rowIndex));
+                  const filteredCols = filteredRows.map((row) =>
+                     row.filter((_, colIndex) => !rowsIdx.includes(colIndex))
+                  );
+                  return filteredCols;
+               });
+               console.log("Matrices after removing rows/cols:", updatedMatrices);
+
+               return { evaluationMatrices: updatedMatrices };
+            }),
       }),
       {
          name: "matrices-storage",

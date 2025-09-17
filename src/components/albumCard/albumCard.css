@@ -43,7 +43,7 @@
    border: 0;
    background: none;
 
-   margin-left: 10px;
+   margin-left: auto;
 
    svg {
       stroke: var(--base-light);
@@ -51,6 +51,10 @@
       stroke-linecap: round;
       stroke-linejoin: round;
    }
+}
+
+.album-card__drag-button--selectable {
+   margin-left: 10px;
 }
 
 .album-card__number {

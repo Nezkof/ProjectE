@@ -6,6 +6,7 @@ import RatingPage from "./pages/rating/RatingPage";
 import ImportPage from "./pages/import/ImportPage";
 import ExpertsButtons from "./components/expertsButtons/ExpertsButtons";
 import ControlButtons from "./components/controlButtons/ControlButtons";
+import DecisionPage from "./pages/decision/DecisionPage";
 
 function App() {
    return (
@@ -17,6 +18,7 @@ function App() {
                <Route path="/" element={<RatingPage />} />
                <Route path="/import" element={<ImportPage />} />
                <Route path="/rating" element={<RankingBoardPage />} />
+               <Route path="/decision" element={<DecisionPage />} />
             </Routes>
          </main>
       </Router>

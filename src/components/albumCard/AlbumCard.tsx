@@ -1,13 +1,14 @@
 import AlbumCover from "../albumCover/AlbumCover";
 
 import "./albumCard.css";
-import { useUnnecessaryAlbumsStore } from "../../hooks/stores/unnecessaryAlbums";
+import { useUnnecessaryAlbumsStore } from "../../hooks/stores/unnecessaryAlbumsStore";
 import { useExpertsStore } from "../../hooks/stores/expertsStore";
 
 interface Props {
    rank?: number;
    id: number;
    isDragable?: boolean;
+   isSelectable?: boolean;
    label: string;
    author: string;
    href: string;
@@ -49,7 +50,7 @@ const AlbumCard = (props: Props) => {
                <h3 className="album-card__author">{props.author}</h3>
             </div>
 
-            {props.isDragable && (
+            {props.isSelectable && (
                <button className="album-card__delete-btn" onClick={handleDeleteBtn}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                      <path d="M18 6 6 18" />
@@ -59,7 +60,11 @@ const AlbumCard = (props: Props) => {
             )}
 
             {props.isDragable && (
-               <button className="album-card__drag-button">
+               <button
+                  className={`album-card__drag-button ${
+                     props.isSelectable ? "album-card__drag-button--selectable" : ""
+                  }`}
+               >
                   <svg
                      width="32"
                      height="26"

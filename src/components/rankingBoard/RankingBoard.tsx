@@ -27,6 +27,7 @@ const RankingBoard = ({ rankedAlbums, updateAlbumPosition }: Props) => {
                               {...provided.dragHandleProps}
                            >
                               <AlbumCard
+                                 isSelectable={true}
                                  id={album.id}
                                  rank={index + 1}
                                  isDragable={true}

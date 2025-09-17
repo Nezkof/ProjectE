@@ -1,0 +1,31 @@
+.decision-page {
+   display: grid;
+   grid-template-areas: "title button" "ranking ranking";
+   align-items: center;
+   justify-content: space-between;
+   row-gap: 55px;
+   width: 100%;
+   padding: 100px 450px;
+}
+
+.decision-page__title {
+   color: var(--base-light);
+   font-weight: bold;
+   font-size: 36;
+   grid-area: title;
+}
+
+.decision-page__confirm-btn {
+   grid-area: button;
+   color: var(--base-dark);
+   padding: 10px 50px;
+   border-radius: 10px;
+   background-color: var(--base-light);
+   border: 0;
+   font-size: 26px;
+   justify-self: end;
+}
+
+.decision-page__ranking-board {
+   grid-area: ranking;
+}
