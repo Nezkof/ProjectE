@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { Album } from "../types/types";
-import { useAlbumsStore } from "./stores/useAlbumsStore";
-import { useExpertsStore } from "./stores/useExpertsStore";
-import { useMatrixStore } from "./stores/useMatrixStore";
+import { useAlbumsStore } from "./stores/albumStore";
+import { useExpertsStore } from "./stores/expertsStore";
+import { useMatrixStore } from "./stores/matrixStore";
 
 export function useRanking() {
-   const { albums } = useAlbumsStore();
-   const { getCurrentExpertId } = useExpertsStore();
-   const { updateMatrix } = useMatrixStore();
+   const albums = useAlbumsStore((state) => state.albums);
+   const currentExpertId = useExpertsStore((state) => state.currentExpertId);
+   const updateMatrix = useMatrixStore((state) => state.updateMatrix);
 
    const [rankedAlbums, setRankedAlbums] = useState<Album[]>([]);
    const tempMatrixRef = useRef<number[][] | null>(null);
@@ -48,7 +48,7 @@ export function useRanking() {
    const confirmRating = () => {
       if (!tempMatrixRef.current) tempMatrixRef.current = calculatePoints(rankedAlbums);
 
-      updateMatrix(getCurrentExpertId(), tempMatrixRef.current);
+      updateMatrix(currentExpertId, tempMatrixRef.current);
    };
 
    return { rankedAlbums, confirmRating, updateAlbumPosition };

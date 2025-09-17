@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import { useCsvImport } from "../../hooks/useCSVImport";
 import { useJsonImport } from "../../hooks/useJsonImport";
 import "./importPage.css";
-import { useAlbumsStore } from "../../hooks/stores/useAlbumsStore";
-import { useExpertsStore } from "../../hooks/stores/useExpertsStore";
+import { useAlbumsStore } from "../../hooks/stores/albumStore";
+import { useExpertsStore } from "../../hooks/stores/expertsStore";
 
 const ImportPage = () => {
    const { jsonData, openJSONFileDialog, handleJSONFileUpload, jsonFileInputRef } = useJsonImport();
    const { openCSVFileDialog, handleCSVFileUpload, csvFileInputRef } = useCsvImport();
-   const { addAlbum, clearAlbums } = useAlbumsStore();
-   const { addExperts } = useExpertsStore();
+
+   const addAlbum = useAlbumsStore((state) => state.addAlbum);
+   const clearAlbums = useAlbumsStore((state) => state.clearAlbums);
+   const addExperts = useExpertsStore((state) => state.addExperts);
 
    const {
       jsonData: expertsJson,
@@ -25,7 +27,7 @@ const ImportPage = () => {
          clearAlbums();
          jsonData.forEach((album) => addAlbum(album));
       }
-   }, [jsonData]);
+   }, [jsonData, clearAlbums, addAlbum]);
 
    useEffect(() => {
       if (!expertsJson) return;
@@ -33,7 +35,7 @@ const ImportPage = () => {
       if (typeof expertsJson === "object" && "expertsAmount" in expertsJson) {
          addExperts((expertsJson as { expertsAmount: number }).expertsAmount);
       }
-   }, [expertsJson]);
+   }, [expertsJson, addExperts]);
 
    return (
       <section className="import-page">

@@ -43,7 +43,7 @@
    border: 0;
    background: none;
 
-   margin-left: auto;
+   margin-left: 10px;
 
    svg {
       stroke: var(--base-light);
@@ -60,4 +60,27 @@
    width: 40px;
    text-align: center;
    font-weight: 600;
+}
+
+.album-card__delete-btn {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: none;
+   margin-left: auto;
+   background: none;
+   padding: 10px;
+
+   svg {
+      stroke: var(--base-light);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      width: 28px;
+      height: 28px;
+   }
+}
+
+.album-card--unnecessary {
+   border-left: 10px solid rgba(255, 0, 0, 0.2);
 }

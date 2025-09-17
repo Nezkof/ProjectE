@@ -1,11 +1,11 @@
 import AlbumCover from "../../components/albumCover/AlbumCover";
 import Rating from "../../components/rating/Rating";
-import { useAlbumsStore } from "../../hooks/stores/useAlbumsStore";
+import { useAlbumsStore } from "../../hooks/stores/albumStore";
 
 import "./ratingPage.css";
 
 const RatingPage = () => {
-   const { rankedAlbums } = useAlbumsStore();
+   const rankedAlbums = useAlbumsStore((state) => state.albums);
 
    return (
       <>

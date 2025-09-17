@@ -16,6 +16,8 @@ const Rating = (props: Props) => {
             <ul className="rating-list">
                {props.albums.map((album, index) => (
                   <AlbumCard
+                     key={album.id}
+                     id={album.id}
                      rank={index + 1}
                      label={album.title}
                      author={album.artist}
