@@ -8,6 +8,8 @@ const AlbumComparator = () => {
       useTournament();
 
    const handleButton = (i: number, j: number) => {
+      console.log(`Обрано альбом з №${i} краще за альбом №${j}`);
+
       if (getCurrPairIdx() === getPairsAmount() - 1) {
          compareAlbums(i, j);
          window.location.href = "/";

@@ -1,4 +1,3 @@
-import { useRanking } from "../../hooks/useRanking";
 import type { Album } from "../../types/types";
 import AlbumCard from "../albumCard/AlbumCard";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";

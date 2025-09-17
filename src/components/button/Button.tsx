@@ -1,17 +1,28 @@
 import "./button.css";
 
 interface Props {
-   iconPath: string;
-   alt: string;
+   alt?: string;
+   iconPath?: string;
+   text?: string;
+   onClick?: () => void;
+   className?: string[];
 }
 
 const Button = (props: Props) => {
+   const defClassName = "control-button";
+
+   const extraClasses = props.className
+      ? props.className.map((cls) => `${defClassName}--${cls}`).join("")
+      : "";
+
    return (
-      <>
-         <button className="control-button">
-            <img className="control-button__image" src={props.iconPath} alt={props.alt} />
-         </button>
-      </>
+      <button className={`${defClassName} ${extraClasses}`} onClick={props.onClick}>
+         {props.text ? (
+            <span className={`${defClassName}__text`}>{props.text}</span>
+         ) : (
+            <img className={`${defClassName}__image`} src={props.iconPath} alt={props.alt} />
+         )}
+      </button>
    );
 };
 

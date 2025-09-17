@@ -3,11 +3,20 @@ import { useCsvImport } from "../../hooks/useCSVImport";
 import { useJsonImport } from "../../hooks/useJsonImport";
 import "./importPage.css";
 import { useAlbumsStore } from "../../hooks/stores/useAlbumsStore";
+import { useExpertsStore } from "../../hooks/stores/useExpertsStore";
 
 const ImportPage = () => {
    const { jsonData, openJSONFileDialog, handleJSONFileUpload, jsonFileInputRef } = useJsonImport();
-   const { csvData, openCSVFileDialog, handleCSVFileUpload, csvFileInputRef } = useCsvImport();
-   const { albums, addAlbum, removeAlbum, updateAlbum, clearAlbums } = useAlbumsStore();
+   const { openCSVFileDialog, handleCSVFileUpload, csvFileInputRef } = useCsvImport();
+   const { addAlbum, clearAlbums } = useAlbumsStore();
+   const { addExperts } = useExpertsStore();
+
+   const {
+      jsonData: expertsJson,
+      openJSONFileDialog: openExpertsJSONFileDialog,
+      handleJSONFileUpload: handleExpertsJSONFileUpload,
+      jsonFileInputRef: expertsJsonFileInputRef,
+   } = useJsonImport();
 
    useEffect(() => {
       if (!jsonData) return;
@@ -18,6 +27,14 @@ const ImportPage = () => {
       }
    }, [jsonData]);
 
+   useEffect(() => {
+      if (!expertsJson) return;
+
+      if (typeof expertsJson === "object" && "expertsAmount" in expertsJson) {
+         addExperts((expertsJson as { expertsAmount: number }).expertsAmount);
+      }
+   }, [expertsJson]);
+
    return (
       <section className="import-page">
          <button className="import-page__button" onClick={openJSONFileDialog}>
@@ -26,6 +43,10 @@ const ImportPage = () => {
 
          <button className="import-page__button" onClick={openCSVFileDialog}>
             Load data from .CSV
+         </button>
+
+         <button className="import-page__button" onClick={openExpertsJSONFileDialog}>
+            Load experts .JSON
          </button>
 
          <input
@@ -42,6 +63,14 @@ const ImportPage = () => {
             ref={jsonFileInputRef}
             style={{ display: "none" }}
             onChange={handleJSONFileUpload}
+         />
+
+         <input
+            type="file"
+            accept=".json"
+            ref={expertsJsonFileInputRef}
+            style={{ display: "none" }}
+            onChange={handleExpertsJSONFileUpload}
          />
       </section>
    );

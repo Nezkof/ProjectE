@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { Album } from "../types/types";
 import { useAlbumsStore } from "./stores/useAlbumsStore";
+import { useExpertsStore } from "./stores/useExpertsStore";
+import { useMatrixStore } from "./stores/useMatrixStore";
 
 export function useRanking() {
-   const { albums, addMatrixPoints } = useAlbumsStore();
+   const { albums } = useAlbumsStore();
+   const { getCurrentExpertId } = useExpertsStore();
+   const { updateMatrix } = useMatrixStore();
 
    const [rankedAlbums, setRankedAlbums] = useState<Album[]>([]);
    const tempMatrixRef = useRef<number[][] | null>(null);
@@ -17,10 +21,10 @@ export function useRanking() {
       const [movedAlbum] = updatedAlbums.splice(sourceIdx, 1);
       updatedAlbums.splice(destinationIdx, 0, movedAlbum);
 
-      setRankedAlbums(updatedAlbums);
+      console.log(`Альбом переміщено з ${sourceIdx} місця на ${destinationIdx}`);
 
+      setRankedAlbums(updatedAlbums);
       tempMatrixRef.current = calculatePoints(updatedAlbums);
-      console.log(tempMatrixRef.current);
    };
 
    const calculatePoints = (albumsOrder: Album[]) => {
@@ -33,10 +37,8 @@ export function useRanking() {
             const firstAlbum = albumsOrder[first];
             const secondAlbum = albumsOrder[second];
 
-            const pointsAmount = Math.abs(first - second);
-
-            matrix[firstAlbum.id - 1][secondAlbum.id - 1] = pointsAmount;
-            matrix[secondAlbum.id - 1][firstAlbum.id - 1] = 1 / pointsAmount;
+            matrix[firstAlbum.id - 1][secondAlbum.id - 1] = 1;
+            matrix[secondAlbum.id - 1][firstAlbum.id - 1] = -1;
          }
       }
 
@@ -44,10 +46,9 @@ export function useRanking() {
    };
 
    const confirmRating = () => {
-      console.log(tempMatrixRef.current);
-      if (!tempMatrixRef.current) return;
+      if (!tempMatrixRef.current) tempMatrixRef.current = calculatePoints(rankedAlbums);
 
-      addMatrixPoints(tempMatrixRef.current);
+      updateMatrix(getCurrentExpertId(), tempMatrixRef.current);
    };
 
    return { rankedAlbums, confirmRating, updateAlbumPosition };

@@ -5,7 +5,6 @@ import "./controlButtons.css";
 import Chart from "/icons/chart.svg";
 import Disc from "/icons/disc-add.svg";
 import List from "/icons/list.svg";
-import Scale from "/icons/scale.svg";
 
 const ControlButtons = () => {
    return (
@@ -16,9 +15,6 @@ const ControlButtons = () => {
             </Link>
             <Link to="/rating">
                <Button iconPath={Chart} alt=""></Button>
-            </Link>
-            <Link to="/tournament">
-               <Button iconPath={Scale} alt=""></Button>
             </Link>
             <Link to="/">
                <Button iconPath={List} alt=""></Button>
