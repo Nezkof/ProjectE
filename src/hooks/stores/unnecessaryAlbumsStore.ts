@@ -5,6 +5,7 @@ interface UnnecessaryAlbumsStore {
    addUnnecessaryAlbum: (expertId: number, albumId: number) => void;
    removeUnnecessaryAlbum: (expertId: number, albumId: number) => void;
    isAlbumUnnecessary: (expertId: number, albumId: number) => boolean;
+   clearUnnecessaryAlbums: () => void;
 }
 
 export const useUnnecessaryAlbumsStore = create<UnnecessaryAlbumsStore>()((set, get) => ({
@@ -39,5 +40,11 @@ export const useUnnecessaryAlbumsStore = create<UnnecessaryAlbumsStore>()((set, 
       const map = get().unnecessaryAlbums;
       if (!map.has(albumId)) return false;
       return (map.get(albumId) ?? []).includes(expertId);
+   },
+
+   clearUnnecessaryAlbums: () => {
+      set(() => {
+         return { unnecessaryAlbums: new Map() };
+      });
    },
 }));

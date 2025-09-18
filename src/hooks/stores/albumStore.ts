@@ -8,6 +8,7 @@ interface AlbumsState {
    addAlbum: (album: Album) => void;
    clearAlbums: () => void;
    removeAlbum: (id: number) => void;
+   reduceIds: () => void;
 }
 
 export const useAlbumsStore = create<AlbumsState>()(
@@ -23,10 +24,18 @@ export const useAlbumsStore = create<AlbumsState>()(
 
          clearAlbums: () => set({ albums: [] }),
 
-         removeAlbum: (id: number) =>
+         removeAlbum: (id) =>
             set((state) => ({
                albums: state.albums.filter((album) => album.id !== id),
                rankedAlbums: state.rankedAlbums.filter((album) => album.id !== id),
+            })),
+
+         reduceIds: () =>
+            set((state) => ({
+               albums: state.albums.map((alb, idx) => ({
+                  ...alb,
+                  id: idx + 1,
+               })),
             })),
       }),
       {

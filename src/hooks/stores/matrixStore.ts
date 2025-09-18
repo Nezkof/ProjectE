@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { useAlbumsStore } from "./albumStore";
 
 interface MatrixStore {
    evaluationMatrices: number[][][];
    updateMatrix: (matrixIndex: number, newMatrix: number[][]) => void;
    addMatrix: (newMatrix: number[][]) => void;
    removeRows: (rowsIdx: number[]) => void;
+   clearMatrices: () => void;
 }
 
 export const useMatrixStore = create<MatrixStore>()(
@@ -45,6 +45,11 @@ export const useMatrixStore = create<MatrixStore>()(
 
                return { evaluationMatrices: updatedMatrices };
             }),
+
+         clearMatrices: () =>
+            set((state) => ({
+               evaluationMatrices: [],
+            })),
       }),
       {
          name: "matrices-storage",
