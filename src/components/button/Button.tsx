@@ -12,7 +12,7 @@ const Button = (props: Props) => {
    const defClassName = "control-button";
 
    const extraClasses = props.className
-      ? props.className.map((cls) => `${defClassName}--${cls}`).join("")
+      ? props.className.map((cls) => `${defClassName}--${cls}`).join(" ")
       : "";
 
    return (

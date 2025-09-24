@@ -9,7 +9,7 @@
 }
 
 .control-button:hover {
-   background-color: #d3d3d3;
+   opacity: 0.8;
 }
 
 .control-button__image,
@@ -25,6 +25,13 @@
 }
 
 .control-button--active {
-   scale: 0.99;
+   transform: scale(0.99);
+   transform-origin: center;
    background-color: rgba(202, 202, 202, 0.8);
+}
+
+.control-button--wide {
+   .control-button__text {
+      width: auto;
+   }
 }

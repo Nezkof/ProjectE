@@ -5,3 +5,8 @@ export interface Album {
    link: string;
    cover: string;
 }
+
+export interface Expert {
+   id: number;
+   name: string;
+}

@@ -10,7 +10,7 @@ const DecisionPage = () => {
    const removeRows = useMatrixStore((state) => state.removeRows);
    const removeAlbum = useAlbumsStore((state) => state.removeAlbum);
    const reduceIds = useAlbumsStore((state) => state.reduceIds);
-   const clearMatrices = useMatrixStore((state) => state.clearMatrices);
+   const clearMatrices = useMatrixStore((state) => state.clearMatrices); 
    const clearUnnecessaryAlbums = useUnnecessaryAlbumsStore(
       (state) => state.clearUnnecessaryAlbums
    );

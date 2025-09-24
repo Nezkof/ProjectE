@@ -11,7 +11,7 @@ const RankingBoard = ({ rankedAlbums, updateAlbumPosition }: Props) => {
    const handleDragEnd = (result: DropResult) => {
       if (!result.destination) return;
       updateAlbumPosition(result.source.index, result.destination.index);
-   };
+};
 
    return (
       <DragDropContext onDragEnd={handleDragEnd}>

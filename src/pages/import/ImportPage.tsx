@@ -11,7 +11,8 @@ const ImportPage = () => {
 
    const addAlbum = useAlbumsStore((state) => state.addAlbum);
    const clearAlbums = useAlbumsStore((state) => state.clearAlbums);
-   const addExperts = useExpertsStore((state) => state.addExperts);
+   const addExpert = useExpertsStore((state) => state.addExpert);
+   const clearExperts = useExpertsStore((state) => state.clearExperts);
 
    const {
       jsonData: expertsJson,
@@ -30,12 +31,16 @@ const ImportPage = () => {
    }, [jsonData, clearAlbums, addAlbum]);
 
    useEffect(() => {
+      console.log(expertsJson);
+
       if (!expertsJson) return;
 
-      if (typeof expertsJson === "object" && "expertsAmount" in expertsJson) {
-         addExperts((expertsJson as { expertsAmount: number }).expertsAmount);
+      if (Array.isArray(expertsJson)) {
+         console.log(expertsJson);
+         clearExperts();
+         expertsJson.forEach((expert) => addExpert(expert));
       }
-   }, [expertsJson, addExperts]);
+   }, [expertsJson, addExpert]);
 
    return (
       <section className="import-page">
