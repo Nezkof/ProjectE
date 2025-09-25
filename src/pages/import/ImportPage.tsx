@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useCsvImport } from "../../hooks/useCSVImport";
 import { useJsonImport } from "../../hooks/useJsonImport";
 import "./importPage.css";
 import { useAlbumsStore } from "../../hooks/stores/albumStore";
@@ -7,7 +6,6 @@ import { useExpertsStore } from "../../hooks/stores/expertsStore";
 
 const ImportPage = () => {
    const { jsonData, openJSONFileDialog, handleJSONFileUpload, jsonFileInputRef } = useJsonImport();
-   const { openCSVFileDialog, handleCSVFileUpload, csvFileInputRef } = useCsvImport();
 
    const addAlbum = useAlbumsStore((state) => state.addAlbum);
    const clearAlbums = useAlbumsStore((state) => state.clearAlbums);
@@ -27,16 +25,14 @@ const ImportPage = () => {
       if (Array.isArray(jsonData)) {
          clearAlbums();
          jsonData.forEach((album) => addAlbum(album));
+         window.location.href = "/rating";
       }
    }, [jsonData, clearAlbums, addAlbum]);
 
    useEffect(() => {
-      console.log(expertsJson);
-
       if (!expertsJson) return;
 
       if (Array.isArray(expertsJson)) {
-         console.log(expertsJson);
          clearExperts();
          expertsJson.forEach((expert) => addExpert(expert));
       }
@@ -48,21 +44,9 @@ const ImportPage = () => {
             Load data from .JSON
          </button>
 
-         <button className="import-page__button" onClick={openCSVFileDialog}>
-            Load data from .CSV
-         </button>
-
          <button className="import-page__button" onClick={openExpertsJSONFileDialog}>
             Load experts .JSON
          </button>
-
-         <input
-            type="file"
-            accept=".csv"
-            ref={csvFileInputRef}
-            style={{ display: "none" }}
-            onChange={handleCSVFileUpload}
-         />
 
          <input
             type="file"

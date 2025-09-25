@@ -4,6 +4,8 @@ import { useAlbumsStore } from "../../hooks/stores/albumStore";
 
 import "./ratingPage.css";
 
+import unknownAlbum from "/images/unknownAlbum.png";
+
 const RatingPage = () => {
    const rankedAlbums = useAlbumsStore((state) => state.albums);
 
@@ -11,16 +13,18 @@ const RatingPage = () => {
       <>
          <section className="rating-page">
             <h1 className="rating-page__header">Music album ratings</h1>
-            {rankedAlbums && rankedAlbums.length > 0 && (
-               <div className="rating-page__container">
+            <div className="rating-page__container">
+               {rankedAlbums && rankedAlbums.length > 0 ? (
                   <AlbumCover
                      href={rankedAlbums[0].link}
                      path={rankedAlbums[0].cover}
                      alt={rankedAlbums[0].title}
                   />
-                  <Rating albums={rankedAlbums}></Rating>
-               </div>
-            )}
+               ) : (
+                  <AlbumCover href={"/"} path={unknownAlbum} alt={"UnknownAlbum"} />
+               )}
+               <Rating albums={rankedAlbums}></Rating>
+            </div>
          </section>
       </>
    );
