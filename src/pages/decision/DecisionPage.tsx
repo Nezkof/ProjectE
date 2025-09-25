@@ -38,7 +38,7 @@ const DecisionPage = () => {
             Remove albums
          </button>
          <ul className="decision-page__ranking-board">
-            {filteredAlbums.length > 0
+            {filteredAlbums.length > 0 && albums.length > 0
                ? filteredAlbums.map((album, index) => (
                     <li key={album.id}>
                        <AlbumCard

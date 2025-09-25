@@ -29,3 +29,7 @@
 .decision-page__ranking-board {
    grid-area: ranking;
 }
+
+.decision-page__confirm-btn:hover {
+   opacity: 0.8;
+}
