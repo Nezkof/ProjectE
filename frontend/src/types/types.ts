@@ -10,3 +10,8 @@ export interface Expert {
    id: number;
    name: string;
 }
+
+export interface User {
+   name: string;
+   picture: string;
+}

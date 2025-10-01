@@ -1,0 +1,26 @@
+.login-button {
+   position: absolute;
+   top: 30px;
+   right: 30px;
+
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+
+   column-gap: 20px;
+   background: none;
+   border: none;
+
+   .login-button__name {
+      font-size: 20px;
+      color: var(--base-light);
+      font-weight: bold;
+   }
+
+   .login-button__picture {
+      width: 55px;
+      height: 55px;
+      border-radius: 100%;
+   }
+}

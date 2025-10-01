@@ -7,11 +7,13 @@ import ImportPage from "./pages/import/ImportPage";
 import ExpertsButtons from "./components/expertsButtons/ExpertsButtons";
 import ControlButtons from "./components/controlButtons/ControlButtons";
 import DecisionPage from "./pages/decision/DecisionPage";
+import Login from "./components/login/Login";
 
 function App() {
    return (
       <Router>
          <main>
+            <Login />
             <ControlButtons />
             <ExpertsButtons />
             <Routes>
