@@ -1,6 +1,6 @@
 import * as usersRepo from "../repositories/usersRepository.js";
 
-export async function addUser(userData) {
+async function addUser(userData) {
    if (!userData.email) {
       throw new Error("Email is required");
    }

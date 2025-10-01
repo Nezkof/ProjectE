@@ -17,7 +17,7 @@ export async function connectDB() {
       await client.connect();
       await client.db("admin").command({ ping: 1 });
       console.log("MongoDB Connected");
-      db = client.db("users");
+      db = client.db("projecte");
    } catch (err) {
       console.error("B connection error:", err);
       process.exit(1);

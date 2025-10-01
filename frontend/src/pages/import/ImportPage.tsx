@@ -7,8 +7,7 @@ import { useExpertsStore } from "../../hooks/stores/expertsStore";
 const ImportPage = () => {
    const { jsonData, openJSONFileDialog, handleJSONFileUpload, jsonFileInputRef } = useJsonImport();
 
-   const addAlbum = useAlbumsStore((state) => state.addAlbum);
-   const clearAlbums = useAlbumsStore((state) => state.clearAlbums);
+   const addAlbums = useAlbumsStore((state) => state.addAlbums);
    const addExpert = useExpertsStore((state) => state.addExpert);
    const clearExperts = useExpertsStore((state) => state.clearExperts);
 
@@ -23,11 +22,10 @@ const ImportPage = () => {
       if (!jsonData) return;
 
       if (Array.isArray(jsonData)) {
-         clearAlbums();
-         jsonData.forEach((album) => addAlbum(album));
+         addAlbums(jsonData);
          window.location.href = "/rating";
       }
-   }, [jsonData, clearAlbums, addAlbum]);
+   }, [jsonData, addAlbums]);
 
    useEffect(() => {
       if (!expertsJson) return;

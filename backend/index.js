@@ -9,6 +9,8 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import usersRouter from "./routes/usersRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import albumsRouter from "./routes/albumsRoutes.js";
+import matricesRouter from "./routes/matricesRoutes.js";
 
 dotenv.config();
 
@@ -54,6 +56,8 @@ app.use(passport.session());
 app.use(express.static("public"));
 
 app.use("/api/users", usersRouter);
+app.use("/api/albums", albumsRouter);
+app.use("/api/matrices", matricesRouter);
 app.use("/", authRouter);
 
 connectDB().then(() => {

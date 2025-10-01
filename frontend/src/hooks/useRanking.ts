@@ -6,6 +6,7 @@ import { useMatrixStore } from "./stores/matrixStore";
 
 export function useRanking() {
    const albums = useAlbumsStore((state) => state.albums);
+   const fetchAlbums = useAlbumsStore((state) => state.fetchAlbums);
    const currentExpertId = useExpertsStore((state) => state.currentExpertId);
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
 
@@ -13,6 +14,7 @@ export function useRanking() {
    const tempMatrixRef = useRef<number[][] | null>(null);
 
    useEffect(() => {
+      fetchAlbums();
       setRankedAlbums(albums);
    }, [albums]);
 
