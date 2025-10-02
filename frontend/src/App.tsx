@@ -4,7 +4,7 @@ import "./App.css";
 import RankingBoardPage from "./pages/rankingBoard/RankingBoardPage";
 import RatingPage from "./pages/rating/RatingPage";
 import ImportPage from "./pages/import/ImportPage";
-import ExpertsButtons from "./components/expertsButtons/ExpertsButtons";
+// import ExpertsButtons from "./components/expertsButtons/ExpertsButtons";
 import ControlButtons from "./components/controlButtons/ControlButtons";
 import DecisionPage from "./pages/decision/DecisionPage";
 import Login from "./components/login/Login";
@@ -15,7 +15,7 @@ function App() {
          <main>
             <Login />
             <ControlButtons />
-            <ExpertsButtons />
+            {/* <ExpertsButtons /> */}
             <Routes>
                <Route path="/" element={<RatingPage />} />
                <Route path="/import" element={<ImportPage />} />

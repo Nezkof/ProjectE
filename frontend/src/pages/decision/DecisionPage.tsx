@@ -1,34 +1,26 @@
+import { useEffect, useState } from "react";
 import AlbumCard from "../../components/albumCard/AlbumCard";
-import { useAlbumsStore } from "../../hooks/stores/albumStore";
-import { useMatrixStore } from "../../hooks/stores/matrixStore";
-import { useUnnecessaryAlbumsStore } from "../../hooks/stores/unnecessaryAlbumsStore";
 import "./decisionPage.css";
 
-import unknownAlbum from "/images/unknownAlbum.png";
+import type { Album } from "../../types/types";
+import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
+import AlbumCardSkeleton from "../../components/albumCard/AlbumCardSkeleton";
 
 const DecisionPage = () => {
-   const unnecessaryAlbums = useUnnecessaryAlbumsStore((state) => state.unnecessaryAlbums);
-   const albums = useAlbumsStore((state) => state.albums);
-   const removeRows = useMatrixStore((state) => state.removeRows);
-   const removeAlbum = useAlbumsStore((state) => state.removeAlbum);
-   const reduceIds = useAlbumsStore((state) => state.reduceIds);
-   const clearMatrices = useMatrixStore((state) => state.clearMatrices);
-   const clearUnnecessaryAlbums = useUnnecessaryAlbumsStore(
-      (state) => state.clearUnnecessaryAlbums
-   );
+   const [ignoredAlbums, setIgnoredAlbums] = useState<Album[]>([]);
+   const fetchAlbums = useIgnoredAlbumsStore((state) => state.fetchAlbums);
 
-   const filteredAlbums = albums.filter((album) => unnecessaryAlbums.has(album.id));
+   useEffect(() => {
+      const loadAlbums = async () => {
+         const albumsData = await fetchAlbums();
+         setIgnoredAlbums(albumsData);
+      };
+
+      loadAlbums();
+   }, []);
 
    const handleConfirm = () => {
-      const albumIdsToRemove = Array.from(unnecessaryAlbums.keys());
-      removeRows(albumIdsToRemove);
-      albumIdsToRemove.forEach((id) => removeAlbum(id));
-
-      clearUnnecessaryAlbums();
-      reduceIds();
-      clearMatrices();
-
-      window.location.href = "/rating";
+      // window.location.href = "/rating";
    };
 
    return (
@@ -38,12 +30,11 @@ const DecisionPage = () => {
             Remove albums
          </button>
          <ul className="decision-page__ranking-board">
-            {filteredAlbums.length > 0 && albums.length > 0
-               ? filteredAlbums.map((album, index) => (
+            {ignoredAlbums.length > 0 && ignoredAlbums.length > 0
+               ? ignoredAlbums.map((album, index) => (
                     <li key={album.id}>
                        <AlbumCard
                           id={album.id}
-                          rank={index + 1}
                           isSelectable={true}
                           label={album.title}
                           author={album.artist}
@@ -55,15 +46,7 @@ const DecisionPage = () => {
                  ))
                : Array.from({ length: 5 }).map((_, index) => (
                     <li key={index}>
-                       <AlbumCard
-                          id={0}
-                          rank={index + 1}
-                          label={"No albums"}
-                          author={""}
-                          href={"/"}
-                          path={unknownAlbum}
-                          alt={"No albums"}
-                       />
+                       <AlbumCardSkeleton />
                     </li>
                  ))}
          </ul>

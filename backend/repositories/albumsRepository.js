@@ -25,3 +25,10 @@ export async function createAlbums(albums) {
 export async function getAlbums() {
    return await getDB().collection(COLLECTION_NAME).find().toArray();
 }
+
+export async function getById(id) {
+   const db = getDB();
+   const collection = db.collection(COLLECTION_NAME);
+
+   return await collection.findOne({ id: id });
+}

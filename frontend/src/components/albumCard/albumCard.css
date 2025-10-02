@@ -110,7 +110,7 @@
    }
 }
 
-.album-card--unnecessary {
+.album-card--ignored {
    border-left: 10px solid rgba(255, 0, 0, 0.2);
 }
 

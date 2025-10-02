@@ -1,23 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { Album } from "../types/types";
 import { useMatrixStore } from "./stores/matrixStore";
-import { getRankedAlbums } from "../services/matricesService";
-import { fetchAlbums } from "../services/albumsService";
+import { useRankedAlbumsStore } from "./stores/rankedAlbumsStore";
 
 export function useRanking() {
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
+   const rankedAlbums = useRankedAlbumsStore((state) => state.rankedAlbums);
+   const fetchAlbums = useRankedAlbumsStore((state) => state.fetchAlbums);
+   const updateAlbums = useRankedAlbumsStore((state) => state.updateAlbums);
 
-   const [rankedAlbums, setRankedAlbums] = useState<Album[]>([]);
    const tempMatrixRef = useRef<number[][] | null>(null);
 
-   const fetchData = async () => {
-      let albums = await getRankedAlbums();
-      if (!albums || albums.length === 0) albums = await fetchAlbums();
-      setRankedAlbums(albums);
-   };
-
    useEffect(() => {
-      fetchData();
+      if (!rankedAlbums || rankedAlbums.length === 0) fetchAlbums();
    }, []);
 
    const updateAlbumPosition = (sourceIdx: number, destinationIdx: number) => {
@@ -27,8 +22,9 @@ export function useRanking() {
 
       console.log(`Альбом переміщено з ${sourceIdx} місця на ${destinationIdx}`);
 
-      setRankedAlbums(updatedAlbums);
+      updateAlbums(updatedAlbums);
       tempMatrixRef.current = calculatePoints(updatedAlbums);
+      confirmRating();
    };
 
    const calculatePoints = (albumsOrder: Album[]) => {
@@ -54,5 +50,5 @@ export function useRanking() {
       updateMatrix(tempMatrixRef.current);
    };
 
-   return { rankedAlbums, confirmRating, updateAlbumPosition };
+   return { rankedAlbums, updateAlbumPosition };
 }

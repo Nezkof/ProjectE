@@ -1,8 +1,7 @@
 import AlbumCover from "../albumCover/AlbumCover";
 
 import "./albumCard.css";
-import { useUnnecessaryAlbumsStore } from "../../hooks/stores/unnecessaryAlbumsStore";
-import { useExpertsStore } from "../../hooks/stores/expertsStore";
+import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
 
 interface Props {
    rank?: number;
@@ -17,27 +16,18 @@ interface Props {
 }
 
 const AlbumCard = (props: Props) => {
-   const addUnnecessaryAlbum = useUnnecessaryAlbumsStore((state) => state.addUnnecessaryAlbum);
-   const removeUnnecessaryAlbum = useUnnecessaryAlbumsStore(
-      (state) => state.removeUnnecessaryAlbum
-   );
-   const isAlbumUnnecessary = useUnnecessaryAlbumsStore((state) => state.isAlbumUnnecessary);
-   const unnecessaryAlbums = useUnnecessaryAlbumsStore((state) => state.unnecessaryAlbums);
-   const currentExpertId = useExpertsStore((state) => state.currentExpertId);
-
-   const isUnnecessary = unnecessaryAlbums.get(props.id)?.includes(currentExpertId);
+   const addIgnoredAlbum = useIgnoredAlbumsStore((state) => state.addIgnoredAlbum);
+   const removeIgnoredAlbum = useIgnoredAlbumsStore((state) => state.removeIgnoredAlbum);
+   const isIgnored = useIgnoredAlbumsStore((state) => state.isAlbumIgnored(props.id));
 
    const handleDeleteBtn = () => {
-      if (isAlbumUnnecessary(currentExpertId, props.id)) {
-         removeUnnecessaryAlbum(currentExpertId, props.id);
-      } else {
-         addUnnecessaryAlbum(currentExpertId, props.id);
-      }
+      if (isIgnored) removeIgnoredAlbum(props.id);
+      else addIgnoredAlbum(props.id);
    };
 
    return (
       <>
-         <div className={`album-card ${isUnnecessary ? "album-card--unnecessary" : ""}`}>
+         <div className={`album-card ${isIgnored ? "album-card--ignored" : ""}`}>
             {props.rank && <span className="album-card__number">{props.rank}</span>}
             <AlbumCover
                className="album-card__cover album-cover--small"

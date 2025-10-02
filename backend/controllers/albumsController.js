@@ -12,7 +12,6 @@ export const getAlbums = async (req, res) => {
 export const addAlbums = async (req, res) => {
    try {
       const albums = req.body;
-      console.log(albums);
       const result = await albumsService.addAlbums(albums);
       res.status(201).json(result);
    } catch (err) {
