@@ -18,7 +18,6 @@ const ExpertsButtons = () => {
    const evaluationMatrices = useMatrixStore((state) => state.evaluationMatrices);
 
    function exportToExcel(results: Result[], fileName: string = "results.xlsx") {
-      // Перетворюємо кожен об’єкт у рядок таблиці
       const rows = results.map((result, i) => {
          const row: Record<string, number> = {};
          result.ranks.forEach((rank, idx) => {
@@ -26,23 +25,15 @@ const ExpertsButtons = () => {
          });
          return { Matrix: i + 1, ...row };
       });
-
-      // Створюємо робочий аркуш
       const worksheet = XLSX.utils.json_to_sheet(rows);
-
-      // Створюємо нову книгу
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Ranks");
-
-      // Записуємо у файл
       XLSX.writeFile(workbook, fileName);
    }
 
    function getRanks(scores: number[]): number[] {
       const indexed = scores.map((score, index) => ({ index, score }));
-
       indexed.sort((a, b) => b.score - a.score);
-
       const ranks = new Array(scores.length);
 
       let currentRank = 1;

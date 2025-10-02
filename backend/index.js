@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./db/connection.js";
 import session from "express-session";
 import passport from "passport";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 import usersRouter from "./routes/usersRoutes.js";
@@ -25,7 +25,7 @@ app.use(
 );
 
 app.use(express.json());
-// app.use(cookieParser());
+app.use(cookieParser());
 
 app.use(
    session({

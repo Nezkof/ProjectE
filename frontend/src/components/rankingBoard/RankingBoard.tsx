@@ -2,7 +2,7 @@ import type { Album } from "../../types/types";
 import AlbumCard from "../albumCard/AlbumCard";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 
-import unknownAlbum from "/images/unknownAlbum.png";
+import AlbumCardSkeleton from "../albumCard/AlbumCardSkeleton";
 
 interface Props {
    rankedAlbums: Album[];
@@ -46,15 +46,7 @@ const RankingBoard = ({ rankedAlbums, updateAlbumPosition }: Props) => {
                        ))
                      : Array.from({ length: 5 }).map((_, index) => (
                           <li key={index}>
-                             <AlbumCard
-                                id={0}
-                                rank={index + 1}
-                                label={"No albums"}
-                                author={""}
-                                href={"/"}
-                                path={unknownAlbum}
-                                alt={"No albums"}
-                             />
+                             <AlbumCardSkeleton />
                           </li>
                        ))}
                   {provided.placeholder}

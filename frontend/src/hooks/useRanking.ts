@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import type { Album } from "../types/types";
-import { useAlbumsStore } from "./stores/albumStore";
-import { useExpertsStore } from "./stores/expertsStore";
 import { useMatrixStore } from "./stores/matrixStore";
+import { getRankedAlbums } from "../services/matricesService";
+import { fetchAlbums } from "../services/albumsService";
 
 export function useRanking() {
-   const albums = useAlbumsStore((state) => state.albums);
-   const fetchAlbums = useAlbumsStore((state) => state.fetchAlbums);
-   const currentExpertId = useExpertsStore((state) => state.currentExpertId);
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
 
    const [rankedAlbums, setRankedAlbums] = useState<Album[]>([]);
    const tempMatrixRef = useRef<number[][] | null>(null);
 
-   useEffect(() => {
-      fetchAlbums();
+   const fetchData = async () => {
+      let albums = await getRankedAlbums();
+      if (!albums || albums.length === 0) albums = await fetchAlbums();
       setRankedAlbums(albums);
-   }, [albums]);
+   };
+
+   useEffect(() => {
+      fetchData();
+   }, []);
 
    const updateAlbumPosition = (sourceIdx: number, destinationIdx: number) => {
       const updatedAlbums = Array.from(rankedAlbums);
@@ -49,8 +51,7 @@ export function useRanking() {
 
    const confirmRating = () => {
       if (!tempMatrixRef.current) tempMatrixRef.current = calculatePoints(rankedAlbums);
-
-      updateMatrix(currentExpertId, tempMatrixRef.current);
+      updateMatrix(tempMatrixRef.current);
    };
 
    return { rankedAlbums, confirmRating, updateAlbumPosition };

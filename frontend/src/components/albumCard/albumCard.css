@@ -7,7 +7,7 @@
 .album-card__info {
    display: flex;
    flex-direction: column;
-   column-gap: 5px;
+   row-gap: 5px;
 }
 
 .album-card:not(:last-child) {
@@ -15,23 +15,42 @@
 }
 
 .album-card__cover {
-   grid-area: cover;
    width: 68px;
+   height: 68px;
+   border-radius: 10px;
    margin-right: 15px;
 }
 
+.album-card__cover--empty,
+.album-card__label--empty,
+.album-card__author--empty,
+.album-card__number--empty {
+   background-color: var(--color-light-30);
+   animation: shimmer 1s infinite;
+}
+
 .album-card__label {
-   grid-area: label;
    color: var(--base-light);
    font-weight: 600;
    font-size: 22px;
 }
 
+.album-card__label--empty {
+   height: 22px;
+   width: 100px;
+   border-radius: 3px;
+}
+
 .album-card__author {
-   grid-area: author;
    color: var(--color-light-10);
    font-weight: 600;
    font-size: 20px;
+}
+
+.album-card__author--empty {
+   height: 20px;
+   width: 50px;
+   border-radius: 3px;
 }
 
 .album-card__drag-button {
@@ -66,6 +85,12 @@
    font-weight: 600;
 }
 
+.album-card__number--empty {
+   width: 25px;
+   height: 25px;
+   border-radius: 5px;
+}
+
 .album-card__delete-btn {
    display: flex;
    justify-content: center;
@@ -87,4 +112,16 @@
 
 .album-card--unnecessary {
    border-left: 10px solid rgba(255, 0, 0, 0.2);
+}
+
+@keyframes shimmer {
+   0% {
+      opacity: 0.9;
+   }
+   50% {
+      opacity: 1;
+   }
+   100% {
+      opacity: 0.9;
+   }
 }
