@@ -2,17 +2,19 @@ import { useEffect, useRef } from "react";
 import type { Album } from "../types/types";
 import { useMatrixStore } from "./stores/matrixStore";
 import { useRankedAlbumsStore } from "./stores/rankedAlbumsStore";
+import { useUsersStore } from "./stores/userStore";
 
 export function useRanking() {
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
    const rankedAlbums = useRankedAlbumsStore((state) => state.rankedAlbums);
    const fetchAlbums = useRankedAlbumsStore((state) => state.fetchAlbums);
    const updateAlbums = useRankedAlbumsStore((state) => state.updateAlbums);
+   const isAuth = useUsersStore((state) => state.isAuth);
 
    const tempMatrixRef = useRef<number[][] | null>(null);
 
    useEffect(() => {
-      if (!rankedAlbums || rankedAlbums.length === 0) fetchAlbums();
+      if (isAuth && (!rankedAlbums || rankedAlbums.length === 0)) fetchAlbums();
    }, []);
 
    const updateAlbumPosition = (sourceIdx: number, destinationIdx: number) => {

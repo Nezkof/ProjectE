@@ -7,7 +7,10 @@ interface AlbumsState {
    albums: Album[];
    addAlbums: (albums: Album[]) => void;
    fetchAlbums: () => void;
+   clearStore: () => void;
 }
+
+const STORE_NAME = "albums-storage";
 
 export const useAlbumsStore = create<AlbumsState>()(
    persist(
@@ -23,9 +26,14 @@ export const useAlbumsStore = create<AlbumsState>()(
             const albums = await AlbumsService.fetchAlbums();
             if (albums) set({ albums: albums });
          },
+
+         clearStore: () => {
+            set({ albums: [] });
+            localStorage.removeItem(STORE_NAME);
+         },
       }),
       {
-         name: "albums-storage",
+         name: STORE_NAME,
       }
    )
 );

@@ -5,18 +5,24 @@ import "./decisionPage.css";
 import type { Album } from "../../types/types";
 import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
 import AlbumCardSkeleton from "../../components/albumCard/AlbumCardSkeleton";
+import { useUsersStore } from "../../hooks/stores/userStore";
+import IgnoredAlbumsService from "../../services/ignoredAlbumsService";
 
 const DecisionPage = () => {
    const [ignoredAlbums, setIgnoredAlbums] = useState<Album[]>([]);
    const fetchAlbums = useIgnoredAlbumsStore((state) => state.fetchAlbums);
+   const isAuth = useUsersStore((state) => state.isAuth);
+
+   const fetchData = async () => {
+      const albums = await IgnoredAlbumsService.getAll();
+      setIgnoredAlbums(albums && albums.length !== 0 ? albums : []);
+      fetchAlbums();
+   };
 
    useEffect(() => {
-      const loadAlbums = async () => {
-         const albumsData = await fetchAlbums();
-         setIgnoredAlbums(albumsData);
-      };
-
-      loadAlbums();
+      if (isAuth) {
+         fetchData();
+      }
    }, []);
 
    const handleConfirm = () => {

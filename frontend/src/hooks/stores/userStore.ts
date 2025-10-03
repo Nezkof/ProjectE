@@ -11,6 +11,8 @@ interface UserStore {
    logout: () => void;
 }
 
+const STORE_NAME = "user-storage";
+
 export const useUsersStore = create<UserStore>()(
    persist(
       (set) => ({
@@ -24,8 +26,9 @@ export const useUsersStore = create<UserStore>()(
          logout: async () => {
             await authService.logout();
             set({ user: null, isAuth: false });
+            localStorage.removeItem(STORE_NAME);
          },
       }),
-      { name: "user-storage" }
+      { name: STORE_NAME }
    )
 );

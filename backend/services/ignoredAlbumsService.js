@@ -22,6 +22,6 @@ export async function getAll() {
    return results;
 }
 
-export async function isIgnoredByUser(userId, albumId) {
-   return await ignoredAlbumsRepo.isIgnoredByUser(userId, albumId);
+export async function getByUserId(userId, albumId) {
+   return await ignoredAlbumsRepo.getByUserId(userId);
 }

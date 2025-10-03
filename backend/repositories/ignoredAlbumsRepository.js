@@ -37,14 +37,9 @@ export async function findAllRaw() {
    return await collection.find({}).toArray();
 }
 
-export async function isIgnoredByUser(userId, albumId) {
+export async function getByUserId(userId) {
    const db = getDB();
    const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
-
-   const result = await collection.findOne({
-      albumId,
-      selectedBy: userId,
-   });
-
-   return result !== null;
+   const docs = await collection.find({ selectedBy: userId }).toArray();
+   return docs.map((doc) => doc.albumId);
 }

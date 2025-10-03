@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import "./login.css";
 import { useUsersStore } from "../../hooks/stores/userStore";
 import User from "/icons/user.svg";
+import { useAlbumsStore } from "../../hooks/stores/albumStore";
+import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
 
 const Login = () => {
    const currentUser = useUsersStore((state) => state.user);
@@ -9,17 +11,26 @@ const Login = () => {
    const fetchUser = useUsersStore((state) => state.fetchUser);
    const logout = useUsersStore((state) => state.logout);
 
+   const clearAlbumsStore = useAlbumsStore((state) => state.clearStore);
+   const clearIgnoredAlbumsStore = useIgnoredAlbumsStore((state) => state.clearStore);
+
    useEffect(() => {
       if (!isAuth) {
          fetchUser();
       }
    }, []);
 
+   const clearStores = () => {
+      logout();
+      clearAlbumsStore();
+      clearIgnoredAlbumsStore();
+   };
+
    const handleLogin = () => {
       if (!isAuth) {
          window.location.href = "http://localhost:8080/auth/google";
       } else {
-         logout();
+         clearStores();
       }
    };
 

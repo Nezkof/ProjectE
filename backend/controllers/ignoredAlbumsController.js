@@ -38,19 +38,18 @@ export const getAll = async (req, res) => {
    }
 };
 
-export const isIgnoredByUser = async (req, res) => {
+export const getByUserId = async (req, res) => {
    try {
-      const { albumId } = req.params;
       const userId = req.cookies.client_id;
 
-      if (!albumId || !userId) {
-         return res.status(400).json({ error: "Missing albumId or userId" });
+      if (!userId) {
+         return res.status(400).json({ message: "client_id cookie is required" });
       }
 
-      const ignored = await ignoredAlbumsService.isIgnoredByUser(userId, parseInt(albumId));
-      res.json({ ignored });
+      const albumIds = await ignoredAlbumsService.getByUserId(userId);
+      res.json(albumIds);
    } catch (err) {
-      console.error("isIgnoredByUser error:", err);
+      console.error("getById error:", err);
       res.status(500).json({ error: "Internal Server Error" });
    }
 };
