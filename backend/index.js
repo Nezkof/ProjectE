@@ -7,6 +7,9 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
+import http from "http";
+import { Server } from "socket.io";
+
 import usersRouter from "./routes/usersRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import albumsRouter from "./routes/albumsRoutes.js";
@@ -17,6 +20,15 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+const server = http.createServer(app);
+const io = new Server(server, {
+   cors: {
+      origin: `http://localhost:${process.env.FRONTEND_PORT}`,
+      credentials: true,
+   },
+});
+app.set("io", io);
 
 app.use(
    cors({
@@ -63,7 +75,15 @@ app.use("/api/ignoredAlbums", ignoredAlbumsRouter);
 app.use("/", authRouter);
 
 connectDB().then(() => {
-   app.listen(PORT, () => {
+   server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+   });
+});
+
+io.on("connection", (socket) => {
+   console.log("(+) Client connected:", socket.id);
+
+   socket.on("disconnect", () => {
+      console.log("(-) Client disconnected:", socket.id);
    });
 });

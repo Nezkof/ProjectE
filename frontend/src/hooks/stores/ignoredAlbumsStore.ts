@@ -1,14 +1,19 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import IgnoredAlbumsService from "../../services/ignoredAlbumsService";
+import socket from "./../../app/socket";
+import type { Album } from "../../types/types";
 
 interface Store {
-   ignoredAlbums: number[];
-   fetchAlbums: () => void;
+   myIgnoredAlbums: number[];
+   allIgnoredAlbums: Album[];
+   fetchMyAlbums: () => void;
+   fetchAllAlbums: () => void;
    addIgnoredAlbum: (albumId: number) => void;
    removeIgnoredAlbum: (albumId: number) => void;
    isAlbumIgnored: (albumId: number) => boolean;
    clearStore: () => void;
+   initSocketListener: () => void;
 }
 
 const STORE_NAME = "ignored-albums-storage";
@@ -16,14 +21,23 @@ const STORE_NAME = "ignored-albums-storage";
 export const useIgnoredAlbumsStore = create<Store>()(
    persist(
       (set, get) => ({
-         ignoredAlbums: [],
+         myIgnoredAlbums: [],
+         allIgnoredAlbums: [],
 
-         fetchAlbums: async () => {
+         fetchMyAlbums: async () => {
             let albums = await IgnoredAlbumsService.getById();
             if (!albums || albums.length === 0) albums = [];
 
             set({
-               ignoredAlbums: albums,
+               myIgnoredAlbums: albums,
+            });
+         },
+
+         fetchAllAlbums: async () => {
+            let albums = await IgnoredAlbumsService.getAll();
+
+            set({
+               allIgnoredAlbums: albums,
             });
          },
 
@@ -31,9 +45,9 @@ export const useIgnoredAlbumsStore = create<Store>()(
             await IgnoredAlbumsService.add(albumId);
 
             set((state) => ({
-               ignoredAlbums: state.ignoredAlbums.includes(albumId)
-                  ? state.ignoredAlbums
-                  : [...state.ignoredAlbums, albumId],
+               myIgnoredAlbums: state.myIgnoredAlbums.includes(albumId)
+                  ? state.myIgnoredAlbums
+                  : [...state.myIgnoredAlbums, albumId],
             }));
          },
 
@@ -41,15 +55,23 @@ export const useIgnoredAlbumsStore = create<Store>()(
             await IgnoredAlbumsService.remove(albumId);
 
             set((state) => ({
-               ignoredAlbums: state.ignoredAlbums.filter((id) => id !== albumId),
+               myIgnoredAlbums: state.myIgnoredAlbums.filter((id) => id !== albumId),
             }));
          },
 
-         isAlbumIgnored: (albumId) => get().ignoredAlbums.includes(albumId),
+         isAlbumIgnored: (albumId) => get().myIgnoredAlbums.includes(albumId),
 
          clearStore: () => {
-            set({ ignoredAlbums: [] });
+            set({ myIgnoredAlbums: [] });
             localStorage.removeItem(STORE_NAME);
+         },
+
+         initSocketListener: () => {
+            socket.on("allIgnoredAlbumsUpdated", async () => {
+               console.log("test");
+
+               await get().fetchAllAlbums();
+            });
          },
       }),
       {

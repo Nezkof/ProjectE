@@ -1,29 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AlbumCard from "../../components/albumCard/AlbumCard";
 import "./decisionPage.css";
 
-import type { Album } from "../../types/types";
 import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
 import AlbumCardSkeleton from "../../components/albumCard/AlbumCardSkeleton";
 import { useUsersStore } from "../../hooks/stores/userStore";
-import IgnoredAlbumsService from "../../services/ignoredAlbumsService";
 
 const DecisionPage = () => {
-   const [ignoredAlbums, setIgnoredAlbums] = useState<Album[]>([]);
-   const fetchAlbums = useIgnoredAlbumsStore((state) => state.fetchAlbums);
+   const initSocketListener = useIgnoredAlbumsStore((s) => s.initSocketListener);
+   const fetchMyAlbums = useIgnoredAlbumsStore((state) => state.fetchMyAlbums);
+   const fetchAllAlbums = useIgnoredAlbumsStore((state) => state.fetchAllAlbums);
+   const allIgnoredAlbums = useIgnoredAlbumsStore((state) => state.allIgnoredAlbums);
    const isAuth = useUsersStore((state) => state.isAuth);
 
    const fetchData = async () => {
-      const albums = await IgnoredAlbumsService.getAll();
-      setIgnoredAlbums(albums && albums.length !== 0 ? albums : []);
-      fetchAlbums();
+      fetchMyAlbums();
+      fetchAllAlbums();
    };
 
    useEffect(() => {
       if (isAuth) {
          fetchData();
       }
-   }, []);
+   }, [isAuth]);
+
+   useEffect(() => {
+      if (isAuth) initSocketListener();
+   }, [isAuth]);
 
    const handleConfirm = () => {
       // window.location.href = "/rating";
@@ -36,8 +39,8 @@ const DecisionPage = () => {
             Remove albums
          </button>
          <ul className="decision-page__ranking-board">
-            {ignoredAlbums.length > 0 && ignoredAlbums.length > 0
-               ? ignoredAlbums.map((album, index) => (
+            {allIgnoredAlbums.length > 0 && allIgnoredAlbums.length > 0
+               ? allIgnoredAlbums.map((album, index) => (
                     <li key={album.id}>
                        <AlbumCard
                           id={album.id}

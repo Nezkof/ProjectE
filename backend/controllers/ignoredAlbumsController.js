@@ -10,6 +10,10 @@ export const add = async (req, res) => {
       }
 
       const result = await ignoredAlbumsService.add(userId, albumId);
+
+      const io = req.app.get("io");
+      io.emit("allIgnoredAlbumsUpdated", { userId, albumId, action: "add" });
+
       res.status(201).json(result);
    } catch (err) {
       res.status(500).json({ error: err.message });
@@ -22,6 +26,10 @@ export const remove = async (req, res) => {
       const userId = req.cookies.client_id;
 
       await ignoredAlbumsService.remove(userId, albumId);
+
+      const io = req.app.get("io");
+      io.emit("allIgnoredAlbumsUpdated", { userId, albumId, action: "remove" });
+
       res.status(200).json({ success: true });
    } catch (err) {
       res.status(500).json({ error: "Failed to remove album" });
