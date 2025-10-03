@@ -14,3 +14,19 @@ export async function addMatrix(userId, matrix) {
 
    return await collection.updateOne({ userId }, { $set: { matrix } }, { upsert: true });
 }
+
+export async function removeAlbums(ids) {
+   const db = getDB();
+   const collection = db.collection(MATRICES_COLLECTION);
+
+   const matrices = await collection.find({}).toArray();
+
+   for (const doc of matrices) {
+      const oldMatrix = doc.matrix;
+      const newMatrix = oldMatrix
+         .filter((_, rowIndex) => !ids.includes(rowIndex))
+         .map((row) => row.filter((_, colIndex) => !ids.includes(colIndex)));
+
+      await collection.updateOne({ userId: doc.userId }, { $set: { matrix: newMatrix } });
+   }
+}

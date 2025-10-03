@@ -24,6 +24,17 @@ export async function remove(userId, albumId) {
    });
 }
 
+export async function removeMany(albumIds) {
+   const db = getDB();
+   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+
+   const result = await collection.deleteMany({
+      albumId: { $in: albumIds },
+   });
+
+   return result;
+}
+
 export async function findByUser(userId) {
    const db = getDB();
    const collection = db.collection(IGNORED_ALBUMS_COLLECTION);

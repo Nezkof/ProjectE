@@ -5,7 +5,7 @@ export const add = async (req, res) => {
       const userId = req.cookies.client_id;
       const { albumId } = req.body;
 
-      if (!userId || !albumId) {
+      if (userId == null || albumId == null) {
          return res.status(400).json({ message: "userId (cookie) and albumId are required" });
       }
 
@@ -33,6 +33,22 @@ export const remove = async (req, res) => {
       res.status(200).json({ success: true });
    } catch (err) {
       res.status(500).json({ error: "Failed to remove album" });
+   }
+};
+
+export const removeMany = async (req, res) => {
+   try {
+      const { albumIds } = req.body;
+      console.log(req.body);
+
+      await ignoredAlbumsService.removeMany(albumIds);
+
+      const io = req.app.get("io");
+      io.emit("allIgnoredAlbumsUpdated", { albumIds, action: "remove" });
+
+      res.status(200).json({ success: true });
+   } catch (err) {
+      res.status(500).json({ error: "Failed to remove albums" });
    }
 };
 

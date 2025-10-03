@@ -54,3 +54,7 @@ export async function getRankedAlbums(userId) {
    const ranks = sortAlbums(scores, albums);
    return ranks;
 }
+
+export async function removeAlbums(ids) {
+   return await matricesRepo.removeAlbums(ids);
+}
