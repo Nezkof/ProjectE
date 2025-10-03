@@ -11,6 +11,7 @@ interface Store {
    fetchAllAlbums: () => void;
    addIgnoredAlbum: (albumId: number) => void;
    removeIgnoredAlbum: (albumId: number) => void;
+   removeAlbums: () => void;
    isAlbumIgnored: (albumId: number) => boolean;
    clearStore: () => void;
    initSocketListener: () => void;
@@ -59,6 +60,11 @@ export const useIgnoredAlbumsStore = create<Store>()(
             }));
          },
 
+         removeAlbums: async () => {
+            const ids = get().allIgnoredAlbums.map((album) => album.id);
+            await IgnoredAlbumsService.removeMany(ids);
+         },
+
          isAlbumIgnored: (albumId) => get().myIgnoredAlbums.includes(albumId),
 
          clearStore: () => {
@@ -67,10 +73,18 @@ export const useIgnoredAlbumsStore = create<Store>()(
          },
 
          initSocketListener: () => {
-            socket.on("allIgnoredAlbumsUpdated", async () => {
-               console.log("test");
+            socket.on("ignoredAlbumsUpdated", async () => {
+               get().fetchAllAlbums();
+            });
 
-               await get().fetchAllAlbums();
+            socket.on("albumsUpdated", async ({ albumIds, action }) => {
+               get().fetchAllAlbums();
+
+               if (action === "removeMany") {
+                  set((state) => ({
+                     myIgnoredAlbums: state.myIgnoredAlbums.filter((id) => !albumIds.includes(id)),
+                  }));
+               }
             });
          },
       }),

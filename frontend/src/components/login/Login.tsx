@@ -4,6 +4,7 @@ import { useUsersStore } from "../../hooks/stores/userStore";
 import User from "/icons/user.svg";
 import { useAlbumsStore } from "../../hooks/stores/albumStore";
 import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
+import { useRankedAlbumsStore } from "../../hooks/stores/rankedAlbumsStore";
 
 const Login = () => {
    const currentUser = useUsersStore((state) => state.user);
@@ -11,8 +12,9 @@ const Login = () => {
    const fetchUser = useUsersStore((state) => state.fetchUser);
    const logout = useUsersStore((state) => state.logout);
 
-   const clearAlbumsStore = useAlbumsStore((state) => state.clearStore);
-   const clearIgnoredAlbumsStore = useIgnoredAlbumsStore((state) => state.clearStore);
+   const clearAlbums = useAlbumsStore((state) => state.clearStore);
+   const clearRankedAlbums = useRankedAlbumsStore((state) => state.clearStore);
+   const clearIgnoredAlbums = useIgnoredAlbumsStore((state) => state.clearStore);
 
    useEffect(() => {
       if (!isAuth) {
@@ -22,8 +24,9 @@ const Login = () => {
 
    const clearStores = () => {
       logout();
-      clearAlbumsStore();
-      clearIgnoredAlbumsStore();
+      clearAlbums();
+      clearRankedAlbums();
+      clearIgnoredAlbums();
    };
 
    const handleLogin = () => {

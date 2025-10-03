@@ -12,7 +12,7 @@ export const add = async (req, res) => {
       const result = await ignoredAlbumsService.add(userId, albumId);
 
       const io = req.app.get("io");
-      io.emit("allIgnoredAlbumsUpdated", { userId, albumId, action: "add" });
+      io.emit("ignoredAlbumsUpdated", { albumIds: albumId, action: "add" });
 
       res.status(201).json(result);
    } catch (err) {
@@ -28,7 +28,7 @@ export const remove = async (req, res) => {
       await ignoredAlbumsService.remove(userId, albumId);
 
       const io = req.app.get("io");
-      io.emit("allIgnoredAlbumsUpdated", { userId, albumId, action: "remove" });
+      io.emit("ignoredAlbumsUpdated", { albumIds: albumId, action: "remove" });
 
       res.status(200).json({ success: true });
    } catch (err) {
@@ -44,7 +44,7 @@ export const removeMany = async (req, res) => {
       await ignoredAlbumsService.removeMany(albumIds);
 
       const io = req.app.get("io");
-      io.emit("allIgnoredAlbumsUpdated", { albumIds, action: "remove" });
+      io.emit("albumsUpdated", { albumIds, action: "removeMany" });
 
       res.status(200).json({ success: true });
    } catch (err) {

@@ -14,12 +14,13 @@ const STORE_NAME = "albums-storage";
 
 export const useAlbumsStore = create<AlbumsState>()(
    persist(
-      (set) => ({
+      (set, get) => ({
          albums: [],
          rankedAlbums: [],
 
          addAlbums: async (albums) => {
             await AlbumsService.addAlbums(albums);
+            set({ albums: albums });
          },
 
          fetchAlbums: async () => {

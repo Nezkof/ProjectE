@@ -11,6 +11,7 @@ const DecisionPage = () => {
    const fetchMyAlbums = useIgnoredAlbumsStore((state) => state.fetchMyAlbums);
    const fetchAllAlbums = useIgnoredAlbumsStore((state) => state.fetchAllAlbums);
    const allIgnoredAlbums = useIgnoredAlbumsStore((state) => state.allIgnoredAlbums);
+   const removeIgnoredAlbums = useIgnoredAlbumsStore((state) => state.removeAlbums);
    const isAuth = useUsersStore((state) => state.isAuth);
 
    const fetchData = async () => {
@@ -29,6 +30,7 @@ const DecisionPage = () => {
    }, [isAuth]);
 
    const handleConfirm = () => {
+      removeIgnoredAlbums();
       // window.location.href = "/rating";
    };
 
@@ -39,8 +41,8 @@ const DecisionPage = () => {
             Remove albums
          </button>
          <ul className="decision-page__ranking-board">
-            {allIgnoredAlbums.length > 0 && allIgnoredAlbums.length > 0
-               ? allIgnoredAlbums.map((album, index) => (
+            {!allIgnoredAlbums || allIgnoredAlbums.length > 0
+               ? allIgnoredAlbums.map((album) => (
                     <li key={album.id}>
                        <AlbumCard
                           id={album.id}

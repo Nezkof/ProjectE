@@ -5,6 +5,7 @@ import { useRankedAlbumsStore } from "./stores/rankedAlbumsStore";
 import { useUsersStore } from "./stores/userStore";
 
 export function useRanking() {
+   const initSocketListener = useRankedAlbumsStore((s) => s.initSocketListener);
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
    const rankedAlbums = useRankedAlbumsStore((state) => state.rankedAlbums);
    const fetchAlbums = useRankedAlbumsStore((state) => state.fetchAlbums);
@@ -12,6 +13,10 @@ export function useRanking() {
    const isAuth = useUsersStore((state) => state.isAuth);
 
    const tempMatrixRef = useRef<number[][] | null>(null);
+
+   useEffect(() => {
+      if (isAuth) initSocketListener();
+   }, [isAuth]);
 
    useEffect(() => {
       if (isAuth && (!rankedAlbums || rankedAlbums.length === 0)) fetchAlbums();
@@ -39,8 +44,8 @@ export function useRanking() {
             const firstAlbum = albumsOrder[first];
             const secondAlbum = albumsOrder[second];
 
-            matrix[firstAlbum.id - 1][secondAlbum.id - 1] = 1;
-            matrix[secondAlbum.id - 1][firstAlbum.id - 1] = -1;
+            matrix[firstAlbum.id][secondAlbum.id] = 1;
+            matrix[secondAlbum.id][firstAlbum.id] = -1;
          }
       }
 

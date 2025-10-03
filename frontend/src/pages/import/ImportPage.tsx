@@ -13,7 +13,7 @@ const ImportPage = () => {
 
       if (Array.isArray(jsonData)) {
          addAlbums(jsonData);
-         window.location.href = "/rating";
+         // window.location.href = "/rating";
       }
    }, [jsonData, addAlbums]);
 

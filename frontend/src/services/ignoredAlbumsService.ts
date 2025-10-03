@@ -38,6 +38,22 @@ class IgnoredAlbumsService {
       }
    }
 
+   static async removeMany(albumIds: number[]) {
+      try {
+         const response = await fetch(`${this.BASE_URL}/removeMany`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ albumIds }),
+         });
+
+         if (!response.ok) throw new Error("Failed to remove albums");
+         return await response.json();
+      } catch (error) {
+         console.error("IgnoredAlbumsService.removeMany error:", error);
+         throw error;
+      }
+   }
+
    static async getAll() {
       try {
          const response = await fetch(`${this.BASE_URL}/all`, {
