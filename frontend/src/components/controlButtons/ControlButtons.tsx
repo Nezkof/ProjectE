@@ -6,10 +6,12 @@ import Chart from "/icons/chart.svg";
 import Disc from "/icons/disc-add.svg";
 import List from "/icons/list.svg";
 import Scale from "/icons/scale.svg";
+import Table from "/icons/table.svg";
 
 const ControlButtons = () => {
    const links = {
       import: "/import",
+      metrics: "/metrics",
       decision: "/decision",
       rating: "/rating",
       empty: "/",
@@ -26,6 +28,13 @@ const ControlButtons = () => {
                   iconPath={Disc}
                   alt=""
                   className={currentPage === links.import ? ["active"] : [""]}
+               ></Button>
+            </Link>
+            <Link to={links.metrics}>
+               <Button
+                  iconPath={Table}
+                  alt=""
+                  className={currentPage === links.metrics ? ["active"] : [""]}
                ></Button>
             </Link>
             <Link to={links.decision}>
