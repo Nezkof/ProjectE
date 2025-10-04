@@ -15,6 +15,7 @@ import authRouter from "./routes/authRoutes.js";
 import albumsRouter from "./routes/albumsRoutes.js";
 import matricesRouter from "./routes/matricesRoutes.js";
 import ignoredAlbumsRouter from "./routes/ignoredAlbumsRoutes.js";
+import metricsRouter from "./routes/metricsRoutes.js";
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/albums", albumsRouter);
 app.use("/api/matrices", matricesRouter);
 app.use("/api/ignoredAlbums", ignoredAlbumsRouter);
+app.use("/api/metrics", metricsRouter);
 app.use("/", authRouter);
 
 connectDB().then(() => {

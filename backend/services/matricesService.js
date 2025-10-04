@@ -1,5 +1,6 @@
 import * as matricesRepo from "../repositories/matricesRepository.js";
 import * as albumsRepo from "../repositories/albumsRepository.js";
+import * as usersRepo from "../repositories/usersRepository.js";
 
 function calculateScores(matrix) {
    const n = matrix.length;
@@ -50,9 +51,34 @@ export async function getRankedAlbums(userId) {
    const albums = await albumsRepo.getAlbums();
 
    const scores = calculateScores(matrix);
-
    const ranks = sortAlbums(scores, albums);
+
    return ranks;
+}
+
+export async function getAlbumsRanks() {
+   const usersMatrices = await matricesRepo.getMatrices();
+   const albums = await albumsRepo.getAlbums();
+   const usersRanks = [];
+
+   for (const data of usersMatrices) {
+      const scores = calculateScores(data.matrix);
+      const userRanks = sortAlbums(scores, albums);
+      const user = await usersRepo.findByGoogleId(data.userId);
+
+      const ranks = [];
+      userRanks.forEach((album, index) => {
+         const rank = index + 1;
+         ranks[album.id] = rank;
+      });
+
+      usersRanks.push({
+         user: user.firstName,
+         ranks: ranks,
+      });
+   }
+
+   return usersRanks;
 }
 
 export async function removeAlbums(ids) {

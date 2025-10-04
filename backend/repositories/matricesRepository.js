@@ -30,3 +30,12 @@ export async function removeAlbums(ids) {
       await collection.updateOne({ userId: doc.userId }, { $set: { matrix: newMatrix } });
    }
 }
+
+export async function getMatrices() {
+   const db = getDB();
+   const collection = db.collection(MATRICES_COLLECTION);
+   const matrices = await collection
+      .find({}, { projection: { userId: 1, matrix: 1, _id: 0 } })
+      .toArray();
+   return matrices;
+}

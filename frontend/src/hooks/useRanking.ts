@@ -3,9 +3,12 @@ import type { Album } from "../types/types";
 import { useMatrixStore } from "./stores/matrixStore";
 import { useRankedAlbumsStore } from "./stores/rankedAlbumsStore";
 import { useUsersStore } from "./stores/userStore";
+import { useIgnoredAlbumsStore } from "./stores/ignoredAlbumsStore";
 
 export function useRanking() {
-   const initSocketListener = useRankedAlbumsStore((s) => s.initSocketListener);
+   const initRankedListener = useRankedAlbumsStore((s) => s.initSocketListener);
+   const initIgnoredListener = useIgnoredAlbumsStore((s) => s.initSocketListener);
+
    const updateMatrix = useMatrixStore((state) => state.updateMatrix);
    const rankedAlbums = useRankedAlbumsStore((state) => state.rankedAlbums);
    const fetchAlbums = useRankedAlbumsStore((state) => state.fetchAlbums);
@@ -13,9 +16,11 @@ export function useRanking() {
    const isAuth = useUsersStore((state) => state.isAuth);
 
    const tempMatrixRef = useRef<number[][] | null>(null);
-
    useEffect(() => {
-      if (isAuth) initSocketListener();
+      if (isAuth) {
+         initRankedListener();
+         initIgnoredListener();
+      }
    }, [isAuth]);
 
    useEffect(() => {
