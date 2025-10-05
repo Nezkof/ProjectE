@@ -11,6 +11,6 @@ export async function findByGoogleId(googleId) {
    return await getDB().collection(USERS_COLLECTION).findOne({ googleId });
 }
 
-export async function getUsers() {
+export async function getAllUsers() {
    return await getDB().collection(USERS_COLLECTION).find({}).toArray();
 }

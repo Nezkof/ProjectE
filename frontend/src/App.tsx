@@ -9,6 +9,7 @@ import ControlButtons from "./components/controlButtons/ControlButtons";
 import DecisionPage from "./pages/decision/DecisionPage";
 import Login from "./components/login/Login";
 import MetricsPage from "./pages/metrics/MetricsPage";
+import HammingPage from "./pages/hammingPage/HammingPage";
 
 function App() {
    return (
@@ -19,7 +20,8 @@ function App() {
             {/* <ExpertsButtons /> */}
             <Routes>
                <Route path="/" element={<RatingPage />} />
-               <Route path="/metrics" element={<MetricsPage />} />
+               <Route path="/cook" element={<MetricsPage />} />
+               <Route path="/hamming" element={<HammingPage />} />
                <Route path="/import" element={<ImportPage />} />
                <Route path="/rating" element={<RankingBoardPage />} />
                <Route path="/decision" element={<DecisionPage />} />

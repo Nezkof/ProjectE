@@ -9,6 +9,7 @@ interface UserStore {
    isAuth: boolean;
    fetchUser: () => void;
    logout: () => void;
+   fetchUsers: () => Promise<User[]>;
 }
 
 const STORE_NAME = "user-storage";
@@ -27,6 +28,11 @@ export const useUsersStore = create<UserStore>()(
             await authService.logout();
             set({ user: null, isAuth: false });
             localStorage.removeItem(STORE_NAME);
+         },
+
+         fetchUsers: async () => {
+            const data = await UserService.fetchUsers();
+            return data;
          },
       }),
       { name: STORE_NAME }

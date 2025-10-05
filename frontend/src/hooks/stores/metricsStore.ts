@@ -11,7 +11,13 @@ interface Store {
       minmaxRankingIndex: 0;
       permutationResults: PermutationResult[];
    };
+   hammingMetric: {
+      vector1: number[];
+      vector2: number[];
+      diffs: number[];
+   };
    getCookMetrics: () => void;
+   getHammingMetrics: (id1: string, id2: string) => void;
 }
 
 export const useMetricsStore = create<Store>()(
@@ -22,9 +28,19 @@ export const useMetricsStore = create<Store>()(
             minmaxRankingIndex: 0,
             permutationResults: [],
          },
+         hammingMetric: {
+            vector1: [],
+            vector2: [],
+            diffs: [],
+         },
          getCookMetrics: async () => {
             const cookMetrics = await MetricsService.getCookMetrics();
             set({ cookMetrics: cookMetrics });
+         },
+
+         getHammingMetrics: async (id1: string, id2: string) => {
+            const hammingMetric = await MetricsService.getHammingMetrics(id1, id2);
+            set({ hammingMetric: hammingMetric });
          },
       }),
       {

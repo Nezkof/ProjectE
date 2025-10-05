@@ -90,3 +90,28 @@ export async function getCookDistance() {
       minmaxRankingIndex,
    };
 }
+
+export async function getHammingDistance(id1, id2) {
+   const matrix1 = await matricesService.getMatrixById(id1);
+   const matrix2 = await matricesService.getMatrixById(id2);
+   const n = matrix1.length;
+
+   const diffs = [];
+   const vector1 = [];
+   const vector2 = [];
+
+   for (let i = 0; i < n - 1; ++i) {
+      for (let j = i + 1; j < n; ++j) {
+         vector1.push(matrix1[i][j]);
+         vector2.push(matrix2[i][j]);
+         const diff = Math.abs(matrix1[i][j] - matrix2[i][j]);
+         diffs.push(diff);
+      }
+   }
+
+   return {
+      vector1,
+      vector2,
+      diffs,
+   };
+}

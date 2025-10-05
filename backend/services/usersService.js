@@ -1,6 +1,6 @@
 import * as usersRepo from "../repositories/usersRepository.js";
 
-async function addUser(userData) {
+export async function addUser(userData) {
    if (!userData.email) {
       throw new Error("Email is required");
    }
@@ -13,8 +13,6 @@ async function addUser(userData) {
    return await usersRepo.createUser(userData);
 }
 
-const usersService = {
-   addUser,
-};
-
-export default usersService;
+export async function getAllUsers() {
+   return await usersRepo.getAllUsers();
+}

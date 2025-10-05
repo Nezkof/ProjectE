@@ -7,11 +7,13 @@ import Disc from "/icons/disc-add.svg";
 import List from "/icons/list.svg";
 import Scale from "/icons/scale.svg";
 import Table from "/icons/table.svg";
+import Ruler from "/icons/ruler.svg";
 
 const ControlButtons = () => {
    const links = {
       import: "/import",
-      metrics: "/metrics",
+      cook: "/cook",
+      hamming: "/hamming",
       decision: "/decision",
       rating: "/rating",
       empty: "/",
@@ -30,11 +32,18 @@ const ControlButtons = () => {
                   className={currentPage === links.import ? ["active"] : [""]}
                ></Button>
             </Link>
-            <Link to={links.metrics}>
+            <Link to={links.hamming}>
+               <Button
+                  iconPath={Ruler}
+                  alt=""
+                  className={currentPage === links.hamming ? ["active"] : [""]}
+               ></Button>
+            </Link>
+            <Link to={links.cook}>
                <Button
                   iconPath={Table}
                   alt=""
-                  className={currentPage === links.metrics ? ["active"] : [""]}
+                  className={currentPage === links.cook ? ["active"] : [""]}
                ></Button>
             </Link>
             <Link to={links.decision}>
