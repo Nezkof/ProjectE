@@ -1,0 +1,17 @@
+.metrics-page {
+   display: flex;
+   justify-content: center;
+
+   width: 100%;
+   padding: 120px 120px 80px 120px;
+
+   .metrics-page__table-container {
+      display: inherit;
+      justify-content: inherit;
+      width: 100%;
+
+      max-height: 900px;
+      overflow-y: auto;
+      padding-right: 20px;
+   }
+}

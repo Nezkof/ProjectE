@@ -35,13 +35,15 @@ export async function getCookDistance() {
    console.log(usersRanks);
 
    let minL = Infinity;
-   let additiveRanking = [];
+   let additiveRankingIndex = [];
 
    let maxl = -Infinity;
    let minMaxl = Infinity;
-   let minmaxRanking = [];
+   let minmaxRankingIndex = [];
 
    let permutationResults = [];
+
+   let index = 0;
 
    for (const permutation of generatePermutations(albumsNumber)) {
       let L = 0;
@@ -64,12 +66,12 @@ export async function getCookDistance() {
 
       if (L < minL) {
          minL = L;
-         additiveRanking = [...permutation];
+         additiveRankingIndex = index;
       }
 
       if (maxl < minMaxl) {
          minMaxl = maxl;
-         minmaxRanking = [...permutation];
+         minmaxRankingIndex = index;
       }
 
       permutationResults.push({
@@ -78,13 +80,13 @@ export async function getCookDistance() {
          sum: L,
          maxl: maxl,
       });
+
+      index += 1;
    }
 
    return {
       permutationResults,
-      additiveRanking,
-      minL,
-      additiveRanking,
-      minMaxl,
+      additiveRankingIndex,
+      minmaxRankingIndex,
    };
 }

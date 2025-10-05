@@ -15,3 +15,13 @@ export interface User {
    name: string;
    picture: string;
 }
+
+export interface PermutationResult {
+   permutation: number[];
+   maxl: number;
+   sum: number;
+   distances: {
+      user: string;
+      distance: number;
+   }[];
+}
