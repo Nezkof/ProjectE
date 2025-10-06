@@ -16,6 +16,7 @@ export function useMedianRanking() {
       if (isReady) {
          getCookMetrics().then(() => {
             setIsLoading(false);
+            console.log(cookMetrics);
          });
 
          fetchAlbums();

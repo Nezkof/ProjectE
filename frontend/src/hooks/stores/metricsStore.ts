@@ -9,6 +9,7 @@ interface Store {
    cookMetrics: {
       additiveRankingIndex: 0;
       minmaxRankingIndex: 0;
+      hammingRankingIndex: 0;
       permutationResults: PermutationResult[];
    };
    hammingMetric: {
@@ -26,6 +27,7 @@ export const useMetricsStore = create<Store>()(
          cookMetrics: {
             additiveRankingIndex: 0,
             minmaxRankingIndex: 0,
+            hammingRankingIndex: 0,
             permutationResults: [],
          },
          hammingMetric: {

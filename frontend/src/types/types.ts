@@ -20,8 +20,10 @@ export interface PermutationResult {
    permutation: number[];
    maxl: number;
    sum: number;
+   hammingDistance: number;
    distances: {
       user: string;
-      distance: number;
+      cookDistance: number;
+      hammingDistance: number;
    }[];
 }

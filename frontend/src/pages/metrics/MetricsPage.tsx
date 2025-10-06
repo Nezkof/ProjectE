@@ -21,7 +21,7 @@ const MetricsPage = () => {
 
       const data: (string | number)[][] = cookMetrics.permutationResults.map((p) => [
          ...p.permutation,
-         ...p.distances.map((d) => d.distance),
+         ...p.distances.map((d) => d.cookDistance),
          p.sum,
          p.maxl,
       ]);
@@ -39,10 +39,6 @@ const MetricsPage = () => {
       // downloadFile()
    }, [cookMetrics, albums]);
 
-   useEffect(() => {
-      console.log(isLoading);
-   }, [isLoading]);
-
    return (
       <>
          {isLoading ? (
@@ -55,6 +51,7 @@ const MetricsPage = () => {
                      additiveRankingIndex={cookMetrics.additiveRankingIndex}
                      minmaxRankingIndex={cookMetrics.minmaxRankingIndex}
                      permutationsData={cookMetrics.permutationResults}
+                     hammingRankingIndex={cookMetrics.hammingRankingIndex}
                   />
                </div>
             </section>
