@@ -6,7 +6,7 @@ import "./rankingBoardPage.css";
 const RankingBoardPage = () => {
    const { rankedAlbums, updateAlbumPosition } = useRanking();
 
-return (
+   return (
       <section className="ranking-board-page">
          <h1 className="ranking-board-page__title">Which album is better for you?</h1>
          <RankingBoard rankedAlbums={rankedAlbums} updateAlbumPosition={updateAlbumPosition} />

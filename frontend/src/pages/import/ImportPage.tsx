@@ -2,26 +2,26 @@ import { useEffect } from "react";
 import { useJsonImport } from "../../hooks/useJsonImport";
 import "./importPage.css";
 import { useAlbumsStore } from "../../hooks/stores/albumStore";
-import { useMatrixStore } from "../../hooks/stores/matrixStore";
 import { useIgnoredAlbumsStore } from "../../hooks/stores/ignoredAlbumsStore";
+import { useRankedAlbumsStore } from "../../hooks/stores/rankedAlbumsStore";
 
 const ImportPage = () => {
    const { jsonData, openJSONFileDialog, handleJSONFileUpload, jsonFileInputRef } = useJsonImport();
 
-   const addAlbums = useAlbumsStore((state) => state.addAlbums);
-   const removeAll = useMatrixStore((state) => state.removeAll);
-   const clearStore = useIgnoredAlbumsStore((state) => state.clearStore);
+   const setAlbums = useAlbumsStore((state) => state.setAlbums);
+   const clearIgnoredStore = useIgnoredAlbumsStore((state) => state.clearStore);
+   const clearRankedStore = useRankedAlbumsStore((state) => state.clearStore);
 
    useEffect(() => {
       if (!jsonData) return;
 
       if (Array.isArray(jsonData)) {
-         addAlbums(jsonData);
-         removeAll();
-         clearStore();
+         setAlbums(jsonData);
+         clearIgnoredStore();
+         clearRankedStore();
          // window.location.href = "/rating";
       }
-   }, [jsonData, addAlbums]);
+   }, [jsonData, setAlbums]);
 
    return (
       <section className="import-page">

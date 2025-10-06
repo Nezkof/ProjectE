@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import type { Album } from "../../types/types";
 import { persist } from "zustand/middleware";
-import * as AlbumsService from "../../services/albumsService";
+import AlbumsService from "../../services/albumsService";
 
 interface AlbumsState {
    albums: Album[];
-   addAlbums: (albums: Album[]) => void;
+   setAlbums: (albums: Album[]) => void;
    fetchAlbums: () => void;
    clearStore: () => void;
 }
@@ -18,8 +18,8 @@ export const useAlbumsStore = create<AlbumsState>()(
          albums: [],
          rankedAlbums: [],
 
-         addAlbums: async (albums) => {
-            await AlbumsService.addAlbums(albums);
+         setAlbums: async (albums) => {
+            await AlbumsService.setAlbums(albums);
             set({ albums: albums });
          },
 

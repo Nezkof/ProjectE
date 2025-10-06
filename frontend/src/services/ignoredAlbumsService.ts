@@ -86,8 +86,6 @@ class IgnoredAlbumsService {
    }
 
    static async removeAll() {
-      console.log("test");
-
       try {
          const response = await fetch(`${this.BASE_URL}/removeAll`, {
             method: "DELETE",

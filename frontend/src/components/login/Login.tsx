@@ -13,8 +13,8 @@ const Login = () => {
    const logout = useUsersStore((state) => state.logout);
 
    const clearAlbums = useAlbumsStore((state) => state.clearStore);
-   const clearRankedAlbums = useRankedAlbumsStore((state) => state.clearStore);
-   const clearIgnoredAlbums = useIgnoredAlbumsStore((state) => state.clearStore);
+   const clearRankedStore = useRankedAlbumsStore((state) => state.clearStore);
+   const clearIgnoredStore = useIgnoredAlbumsStore((state) => state.clearStore);
 
    useEffect(() => {
       if (!isAuth) {
@@ -25,8 +25,8 @@ const Login = () => {
    const clearStores = () => {
       logout();
       clearAlbums();
-      clearRankedAlbums();
-      clearIgnoredAlbums();
+      clearRankedStore();
+      clearIgnoredStore();
    };
 
    const handleLogin = () => {

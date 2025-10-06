@@ -1,25 +1,15 @@
 import { useEffect } from "react";
 import "./metricsPage.css";
-import { useMetricsStore } from "../../hooks/stores/metricsStore";
 import PermutationsTable from "../../components/permutationsTable/PermutationsTable";
-import { useAlbumsStore } from "../../hooks/stores/albumStore";
-import PermutationsFooter from "../../components/permutationsFooter/PermutationsFooter";
 
 import * as XLSX from "xlsx";
+import { useMedianRanking } from "../../hooks/useMedianRanking";
+import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
 
 const MetricsPage = () => {
-   const cookMetrics = useMetricsStore((state) => state.cookMetrics);
-   const albums = useAlbumsStore((state) => state.albums);
-   const fetchAlbums = useAlbumsStore((state) => state.fetchAlbums);
-   const getCookMetrics = useMetricsStore((state) => state.getCookMetrics);
+   const { isLoading, albums, cookMetrics } = useMedianRanking();
 
-   useEffect(() => {
-      getCookMetrics();
-      fetchAlbums();
-      console.log(cookMetrics);
-   }, []);
-
-   useEffect(() => {
+   const downloadFile = () => {
       if (!cookMetrics || !albums.length) return;
 
       const headers = [
@@ -43,21 +33,32 @@ const MetricsPage = () => {
       XLSX.utils.book_append_sheet(wb, ws, "CookMetrics");
 
       XLSX.writeFile(wb, "cook_metrics.xlsx");
+   };
+
+   useEffect(() => {
+      // downloadFile()
    }, [cookMetrics, albums]);
+
+   useEffect(() => {
+      console.log(isLoading);
+   }, [isLoading]);
 
    return (
       <>
-         <section className="metrics-page">
-            <div className="metrics-page__table-container">
-               <PermutationsTable
-                  albums={albums}
-                  additiveRankingIndex={cookMetrics.additiveRankingIndex}
-                  minmaxRankingIndex={cookMetrics.minmaxRankingIndex}
-                  permutationsData={cookMetrics.permutationResults}
-               />
-               <PermutationsFooter />
-            </div>
-         </section>
+         {isLoading ? (
+            <LoadingScreen />
+         ) : (
+            <section className="metrics-page">
+               <div className="metrics-page__table-container">
+                  <PermutationsTable
+                     albums={albums}
+                     additiveRankingIndex={cookMetrics.additiveRankingIndex}
+                     minmaxRankingIndex={cookMetrics.minmaxRankingIndex}
+                     permutationsData={cookMetrics.permutationResults}
+                  />
+               </div>
+            </section>
+         )}
       </>
    );
 };

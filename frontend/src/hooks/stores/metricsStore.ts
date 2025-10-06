@@ -16,7 +16,7 @@ interface Store {
       vector2: number[];
       diffs: number[];
    };
-   getCookMetrics: () => void;
+   getCookMetrics: () => Promise<void>;
    getHammingMetrics: (id1: string, id2: string) => void;
 }
 

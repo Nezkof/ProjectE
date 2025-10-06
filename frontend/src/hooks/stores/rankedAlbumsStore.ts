@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import type { Album } from "../../types/types";
 import { persist } from "zustand/middleware";
-import { fetchAlbums } from "../../services/albumsService";
 import socket from "../../app/socket";
 import MatricesService from "../../services/matricesService";
+import AlbumsService from "../../services/albumsService";
 
 interface State {
    rankedAlbums: Album[];
@@ -11,6 +11,7 @@ interface State {
    updateAlbums: (updateAlbums: Album[]) => void;
    initSocketListener: () => void;
    clearStore: () => void;
+   clearTable: () => void;
 }
 
 const STORE_NAME = "albums-storage";
@@ -22,7 +23,7 @@ export const useRankedAlbumsStore = create<State>()(
 
          fetchAlbums: async () => {
             let albums = await MatricesService.getRankedAlbums();
-            if (!albums || albums.length === 0) albums = await fetchAlbums();
+            if (!albums || albums.length === 0) albums = await AlbumsService.fetchAlbums();
             if (albums) set({ rankedAlbums: albums });
          },
 
@@ -41,8 +42,14 @@ export const useRankedAlbumsStore = create<State>()(
             });
          },
 
-         clearStore: () => {
+         clearStore: async () => {
             set({ rankedAlbums: [] });
+            localStorage.removeItem(STORE_NAME);
+         },
+
+         clearTable: async () => {
+            set({ rankedAlbums: [] });
+            await MatricesService.removeAll();
             localStorage.removeItem(STORE_NAME);
          },
       }),

@@ -69,8 +69,11 @@ export const useIgnoredAlbumsStore = create<Store>()(
 
          clearStore: async () => {
             set({ myIgnoredAlbums: [] });
-            console.log("test");
+            localStorage.removeItem(STORE_NAME);
+         },
 
+         clearTable: async () => {
+            set({ myIgnoredAlbums: [] });
             await IgnoredAlbumsService.removeAll();
             localStorage.removeItem(STORE_NAME);
          },
