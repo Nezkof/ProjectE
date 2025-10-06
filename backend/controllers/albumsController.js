@@ -9,10 +9,10 @@ export const getAlbums = async (req, res) => {
    }
 };
 
-export const addAlbums = async (req, res) => {
+export const setAlbums = async (req, res) => {
    try {
       const albums = req.body;
-      const result = await albumsService.addAlbums(albums);
+      const result = await albumsService.setAlbums(albums);
 
       const io = req.app.get("io");
       io.emit("albumsUpdated", { action: "add" });

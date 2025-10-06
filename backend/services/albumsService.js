@@ -1,6 +1,6 @@
 import * as albumsRepo from "../repositories/albumsRepository.js";
 
-export async function addAlbums(albums) {
+export async function setAlbums(albums) {
    if (!Array.isArray(albums) || albums.length === 0) {
       throw new Error("Request body must be a non-empty array of albums");
    }
@@ -11,7 +11,7 @@ export async function addAlbums(albums) {
       }
    });
 
-   return await albumsRepo.createAlbums(albums);
+   return await albumsRepo.setAlbums(albums);
 }
 
 export async function removeMany(ids) {

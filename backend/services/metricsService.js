@@ -32,7 +32,6 @@ function nextPermutation(arr) {
 export async function getCookDistance() {
    const usersRanks = await matricesService.getAlbumsRanks();
    const albumsNumber = usersRanks[0].ranks.length;
-   console.log(usersRanks);
 
    let minL = Infinity;
    let additiveRankingIndex = [];

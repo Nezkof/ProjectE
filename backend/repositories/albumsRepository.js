@@ -1,41 +1,28 @@
-import { ObjectId } from "mongodb";
 import { getDB } from "../db/connection.js";
 
 const COLLECTION_NAME = "albums";
 
-export async function createAlbums(albums) {
-   const db = getDB();
-   const collection = db.collection(COLLECTION_NAME);
+export async function setAlbums(albums) {
+   const collection = getDB().collection(COLLECTION_NAME);
+   await collection.deleteMany({});
 
-   const ids = albums.map((a) => a.id);
-
-   const existing = await collection.find({ id: { $in: ids } }).toArray();
-   const existingIds = existing.map((e) => e.id);
-
-   const newAlbums = albums.filter((a) => !existingIds.includes(a.id));
-
-   if (newAlbums.length === 0) {
-      return { message: "No new albums to insert", insertedCount: 0 };
-   }
-
-   const result = await collection.insertMany(newAlbums);
-   return { message: "Inserted albums", insertedCount: result.insertedCount };
+   const result = await collection.insertMany(albums);
+   return {
+      message: "Collection cleared and albums inserted",
+      insertedCount: result.insertedCount,
+   };
 }
-
 export async function getAlbums() {
    return await getDB().collection(COLLECTION_NAME).find().toArray();
 }
 
 export async function getById(id) {
-   const db = getDB();
-   const collection = db.collection(COLLECTION_NAME);
-
+   const collection = getDB().collection(COLLECTION_NAME);
    return await collection.findOne({ id: id });
 }
 
 export async function removeMany(ids) {
-   const db = getDB();
-   const collection = db.collection(COLLECTION_NAME);
+   const collection = getDB().collection(COLLECTION_NAME);
 
    const result = await collection.deleteMany({
       id: { $in: ids },
@@ -45,11 +32,9 @@ export async function removeMany(ids) {
 }
 
 export async function reindex() {
-   const db = getDB();
-   const collection = db.collection(COLLECTION_NAME);
+   const collection = getDB().collection(COLLECTION_NAME);
 
    const albums = await collection.find({}).sort({ id: 1 }).toArray();
-
    const updatedAlbums = albums.map((album, index) => ({
       ...album,
       oldId: album.id,

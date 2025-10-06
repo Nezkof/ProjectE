@@ -4,6 +4,6 @@ import * as albumsController from "../controllers/albumsController.js";
 const router = express.Router();
 
 router.get("/", albumsController.getAlbums);
-router.post("/addAlbums", albumsController.addAlbums);
+router.post("/setAlbums", albumsController.setAlbums);
 
 export default router;
