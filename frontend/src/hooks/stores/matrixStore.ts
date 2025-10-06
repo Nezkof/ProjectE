@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import * as matricesService from "./../../services/matricesService";
+import MatricesService from "./../../services/matricesService";
 
 interface MatrixStore {
    updateMatrix: (newMatrix: number[][]) => void;
+   removeAll: () => void;
 }
+
+const STORE_NAME = "matrices-storage";
 
 export const useMatrixStore = create<MatrixStore>()(
    persist(
@@ -13,11 +16,15 @@ export const useMatrixStore = create<MatrixStore>()(
          evaluationMatrices: [],
 
          updateMatrix: async (newMatrix) => {
-            await matricesService.addMatrix(newMatrix);
+            await MatricesService.addMatrix(newMatrix);
+         },
+
+         removeAll: async () => {
+            await MatricesService.removeAll();
          },
       }),
       {
-         name: "matrices-storage",
+         name: STORE_NAME,
       }
    )
 );

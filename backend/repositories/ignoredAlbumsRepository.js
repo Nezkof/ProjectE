@@ -1,10 +1,10 @@
 import { getDB } from "../db/connection.js";
 
-const IGNORED_ALBUMS_COLLECTION = "ignoredAlbums";
+const COLLECTION_NAME = "ignoredAlbums";
 
 export async function add(userId, albumId) {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
 
    return await collection.updateOne(
       { albumId },
@@ -15,7 +15,7 @@ export async function add(userId, albumId) {
 
 export async function remove(userId, albumId) {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
 
    await collection.updateOne({ albumId }, { $pull: { selectedBy: userId } });
    return await collection.deleteOne({
@@ -26,7 +26,7 @@ export async function remove(userId, albumId) {
 
 export async function removeMany(albumIds) {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
 
    const result = await collection.deleteMany({
       albumId: { $in: albumIds },
@@ -37,20 +37,26 @@ export async function removeMany(albumIds) {
 
 export async function findByUser(userId) {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
 
    return await collection.find({ selectedBy: userId }).toArray();
 }
 
 export async function findAllRaw() {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
    return await collection.find({}).toArray();
 }
 
 export async function getByUserId(userId) {
    const db = getDB();
-   const collection = db.collection(IGNORED_ALBUMS_COLLECTION);
+   const collection = db.collection(COLLECTION_NAME);
    const docs = await collection.find({ selectedBy: userId }).toArray();
    return docs.map((doc) => doc.albumId);
+}
+
+export async function removeAll() {
+   const collection = getDB().collection(COLLECTION_NAME);
+   const result = await collection.deleteMany({});
+   return result;
 }

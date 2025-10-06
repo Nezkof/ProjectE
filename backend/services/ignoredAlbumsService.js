@@ -32,3 +32,7 @@ export async function getAll() {
 export async function getByUserId(userId, albumId) {
    return await ignoredAlbumsRepo.getByUserId(userId);
 }
+
+export async function removeAll() {
+   return await ignoredAlbumsRepo.removeAll();
+}

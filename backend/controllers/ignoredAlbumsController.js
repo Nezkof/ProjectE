@@ -39,8 +39,6 @@ export const remove = async (req, res) => {
 export const removeMany = async (req, res) => {
    try {
       const { albumIds } = req.body;
-      console.log(req.body);
-
       await ignoredAlbumsService.removeMany(albumIds);
 
       const io = req.app.get("io");
@@ -75,5 +73,14 @@ export const getByUserId = async (req, res) => {
    } catch (err) {
       console.error("getById error:", err);
       res.status(500).json({ error: "Internal Server Error" });
+   }
+};
+
+export const removeAll = async (req, res) => {
+   try {
+      const result = await ignoredAlbumsService.removeAll();
+      res.status(200).json(result);
+   } catch (err) {
+      res.status(500).json({ error: err.message });
    }
 };

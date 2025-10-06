@@ -84,3 +84,7 @@ export async function getAlbumsRanks() {
 export async function removeAlbums(ids) {
    return await matricesRepo.removeAlbums(ids);
 }
+
+export async function removeAll() {
+   return await matricesRepo.removeAll();
+}

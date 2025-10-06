@@ -39,3 +39,9 @@ export async function getMatrices() {
       .toArray();
    return matrices;
 }
+
+export async function removeAll() {
+   const collection = getDB().collection(MATRICES_COLLECTION);
+   const result = await collection.deleteMany({});
+   return result;
+}

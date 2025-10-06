@@ -2,8 +2,8 @@ import { create } from "zustand";
 import type { Album } from "../../types/types";
 import { persist } from "zustand/middleware";
 import { fetchAlbums } from "../../services/albumsService";
-import { getRankedAlbums } from "../../services/matricesService";
 import socket from "../../app/socket";
+import MatricesService from "../../services/matricesService";
 
 interface State {
    rankedAlbums: Album[];
@@ -21,7 +21,7 @@ export const useRankedAlbumsStore = create<State>()(
          rankedAlbums: [],
 
          fetchAlbums: async () => {
-            let albums = await getRankedAlbums();
+            let albums = await MatricesService.getRankedAlbums();
             if (!albums || albums.length === 0) albums = await fetchAlbums();
             if (albums) set({ rankedAlbums: albums });
          },

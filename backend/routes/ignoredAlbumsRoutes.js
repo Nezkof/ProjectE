@@ -8,5 +8,6 @@ router.post("/remove", ignoredAlbumsController.remove);
 router.post("/removeMany", ignoredAlbumsController.removeMany);
 router.get("/all", ignoredAlbumsController.getAll);
 router.get("/getByUserId", ignoredAlbumsController.getByUserId);
+router.delete("/removeAll", ignoredAlbumsController.removeAll);
 
 export default router;

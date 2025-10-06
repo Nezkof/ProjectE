@@ -84,6 +84,25 @@ class IgnoredAlbumsService {
          throw error;
       }
    }
+
+   static async removeAll() {
+      console.log("test");
+
+      try {
+         const response = await fetch(`${this.BASE_URL}/removeAll`, {
+            method: "DELETE",
+         });
+
+         if (!response.ok) {
+            throw new Error("Failed to delete all ignored albums");
+         }
+
+         return await response.json();
+      } catch (error) {
+         console.error("IgnoredAlbumsService.removeAll error:", error);
+         return null;
+      }
+   }
 }
 
 export default IgnoredAlbumsService;
