@@ -76,6 +76,7 @@ app.use("/api/ignoredAlbums", ignoredAlbumsRouter);
 app.use("/api/metrics", metricsRouter);
 app.use("/", authRouter);
 
+
 connectDB().then(() => {
    server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

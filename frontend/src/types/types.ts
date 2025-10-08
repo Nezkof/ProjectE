@@ -18,12 +18,10 @@ export interface User {
 
 export interface PermutationResult {
    permutation: number[];
-   maxl: number;
-   sum: number;
-   hammingDistance: number;
-   distances: {
+   permutationDistance: number;
+   usersData: {
       user: string;
-      cookDistance: number;
-      hammingDistance: number;
+      userDistance: number;
    }[];
 }
+

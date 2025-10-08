@@ -1,6 +1,7 @@
 .metrics-page {
    display: flex;
-   justify-content: center;
+   flex-direction: column;
+   row-gap: 100px;
 
    width: 100%;
    padding: 120px 120px 80px 120px;
@@ -13,5 +14,26 @@
       max-height: 900px;
       overflow-y: auto;
       padding-right: 20px;
+   }
+
+   .metrics-page__tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+   }
+
+   .metrics-page__tab {
+      background-color: inherit;
+      color: var(--base-light);
+      font-size: 20px;
+      padding: 5px 30px;
+      border: none;
+   }
+
+   .metrics-page__tab:not(:last-child) {
+      border-right: 1px solid var(--color-light-20);
+   }
+
+   .metrics-page__tab--active {
+      font-weight: 500;
    }
 }

@@ -4,31 +4,10 @@ import "./permutationsTable.css";
 
 interface Props {
    albums: Album[];
-   additiveRankingIndex: number;
-   minmaxRankingIndex: number;
-   hammingRankingIndex: number;
-   permutationsData: PermutationResult[];
+   metric: PermutationResult[];
 }
 
-const PermutationsTable = ({
-   albums,
-   permutationsData,
-   additiveRankingIndex,
-   minmaxRankingIndex,
-   hammingRankingIndex,
-}: Props) => {
-   const isMinmax = (index: number) => {
-      return index === minmaxRankingIndex ? "perm-table__row--minmax" : "";
-   };
-
-   const isAdditive = (index: number) => {
-      return index === additiveRankingIndex ? "perm-table__row--additive" : "";
-   };
-
-   const isHamming = (index: number) => {
-      return index === hammingRankingIndex ? "perm-table__row--hamming" : "";
-   };
-
+const PermutationsTable = ({ albums, metric }: Props) => {
    return (
       <>
          <table className="perm-table">
@@ -44,35 +23,22 @@ const PermutationsTable = ({
                         ></AlbumCover>
                      </th>
                   ))}
-                  {permutationsData[0].distances.map((element) => (
-                     <th key={element.user}>{element.user} Cook</th>
+                  {metric[0].usersData.map((element) => (
+                     <th key={element.user}>{element.user}</th>
                   ))}
-                  {permutationsData[0].distances.map((element) => (
-                     <th key={element.user}>{element.user} Hamming</th>
-                  ))}
-                  <th>Sum Cook</th>
-                  <th>Max Cook</th>
-                  <th>Min Hamming</th>
+                  <th>Result</th>
                </tr>
             </thead>
             <tbody className="perm-table__body">
-               {permutationsData.map((permutationData, index) => (
-                  <tr
-                     key={index}
-                     className={`${isMinmax(index)} ${isAdditive(index)} ${isHamming(index)}`}
-                  >
-                     {permutationData.permutation.map((element) => (
+               {metric.map((row, index) => (
+                  <tr key={index}>
+                     {row.permutation.map((element) => (
                         <td key={element}>{element}</td>
                      ))}
-                     {permutationData.distances.map((element, index) => (
-                        <td key={index}>{element.cookDistance}</td>
+                     {row.usersData.map((element, index) => (
+                        <td key={index}>{element.userDistance}</td>
                      ))}
-                     {permutationData.distances.map((element, index) => (
-                        <td key={index}>{element.hammingDistance}</td>
-                     ))}
-                     <td>{permutationData.sum}</td>
-                     <td>{permutationData.maxl}</td>
-                     <td>{permutationData.hammingDistance}</td>
+                     <td>{row.permutationDistance}</td>
                   </tr>
                ))}
             </tbody>

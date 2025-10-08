@@ -2,32 +2,47 @@ import { useEffect, useRef, useState } from "react";
 import { useMetricsStore } from "./stores/metricsStore";
 import { useAlbumsStore } from "./stores/albumStore";
 
+export const MetricNames = {
+   additiveCook: "AdditiveCook",
+   minmaxCook: "MinMaxCook",
+   additiveHamming: "AdditiveHamming",
+   minmaxHamming: "MinmaxHamming",
+} as const;
+
+export type MetricKey = (typeof MetricNames)[keyof typeof MetricNames];
+
 export function useMedianRanking() {
    const fetchAlbums = useAlbumsStore((state) => state.fetchAlbums);
    const getCookMetrics = useMetricsStore((state) => state.getCookMetrics);
 
-   const cookMetrics = useMetricsStore((state) => state.cookMetrics);
+   const metrics = useMetricsStore((state) => state.metrics);
    const albums = useAlbumsStore((state) => state.albums);
 
    const [isLoading, setIsLoading] = useState<boolean>(true);
+   const [currMetricKey, setCurrMetricKey] = useState<number>(0);
    const isReady = useRef<boolean>(false);
 
    useEffect(() => {
       if (isReady) {
-         getCookMetrics().then(() => {
+         Promise.all([getCookMetrics(), fetchAlbums()]).then(() => {
             setIsLoading(false);
-            console.log(cookMetrics);
          });
-
-         fetchAlbums();
       }
 
       isReady.current = true;
    }, []);
 
+   useEffect(() => {
+      if (!isLoading) {
+         console.log("Metrics:", metrics);
+      }
+   }, [metrics, isLoading]);
+
    return {
       isLoading,
       albums,
-      cookMetrics,
+      activeMetric: currMetricKey,
+      metrics,
+      setCurrMetricKey,
    };
 }

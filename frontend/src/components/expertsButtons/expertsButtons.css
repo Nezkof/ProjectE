@@ -1,9 +1,0 @@
-.experts-buttons {
-   position: fixed;
-   bottom: 30px;
-   right: 30px;
-
-   display: flex;
-   flex-direction: column;
-   gap: 15px;
-}

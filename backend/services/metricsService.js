@@ -53,39 +53,37 @@ export async function getCookDistance() {
    const albumsNumber = usersRanks[0].ranks.length;
 
    let minL = Infinity;
-   let additiveRankingIndex = 0;
-
-   let maxl = -Infinity;
    let minMaxl = Infinity;
    let minH = Infinity;
-   let minmaxRankingIndex = 0;
-   let hammingRankingIndex = 0;
+   let minMaxH = Infinity;
 
-   let permutationResults = [];
-
-   let index = 0;
+   let additiveCookResults = [];
+   let minmaxCookResults = [];
+   let additiveHammingResults = [];
+   let minmaxHammingResults = [];
 
    for (const permutation of generatePermutations(albumsNumber)) {
-      let L = 0;
-      let H = 0;
-      let maxl = -Infinity;
+      let L = 0; // sumCook
+      let H = 0; // sumHamming
+      let maxl = -Infinity; // maxCook
+      let maxh = -Infinity; // maxHamming
       let distances = [];
 
       const permMatrix = ranksToComparisonMatrix(permutation);
 
       for (const expert of usersRanks) {
          let l = 0;
-
          for (let i = 0; i < albumsNumber; i++) {
             l += Math.abs(permutation[i] - expert.ranks[i]);
          }
 
          const expertMatrix = ranksToComparisonMatrix(expert.ranks);
-         const diffs = getHammingDistance2(permMatrix, expertMatrix);
-
+         const diffs = getHammingDistance(permMatrix, expertMatrix);
          const hammingDistance = diffs.reduce((a, b) => a + b, 0);
 
          maxl = Math.max(maxl, l);
+         maxh = Math.max(maxh, hammingDistance);
+
          L += l;
          H += hammingDistance;
 
@@ -96,41 +94,69 @@ export async function getCookDistance() {
          });
       }
 
-      if (L < minL) {
-         minL = L;
-         additiveRankingIndex = index;
-      }
-
-      if (maxl < minMaxl) {
-         minMaxl = maxl;
-         minmaxRankingIndex = index;
-      }
-
-      if (H < minH) {
-         minH = H;
-         hammingRankingIndex = index;
-      }
-
-      permutationResults.push({
+      const baseResult = {
          permutation: [...permutation],
-         distances: distances,
-         sum: L,
-         maxl: maxl,
-         hammingDistance: H,
-      });
+      };
 
-      index += 1;
+      const MAX_RESULTS = 5;
+
+      const updateResults = (currentValue, minValue, resultsArray, resultDataCreator) => {
+         if (currentValue < minValue) {
+            resultsArray.length = 0;
+            resultsArray.push(resultDataCreator());
+            return currentValue;
+         } else if (currentValue === minValue && resultsArray.length < MAX_RESULTS) {
+            resultsArray.push(resultDataCreator());
+         }
+         return minValue;
+      };
+
+      minL = updateResults(L, minL, additiveCookResults, () => ({
+         ...baseResult,
+         permutationDistance: L,
+         usersData: distances.map((d) => ({
+            user: d.user,
+            userDistance: d.cookDistance,
+         })),
+      }));
+
+      minMaxl = updateResults(maxl, minMaxl, minmaxCookResults, () => ({
+         ...baseResult,
+         permutationDistance: maxl,
+         usersData: distances.map((d) => ({
+            user: d.user,
+            userDistance: d.cookDistance,
+         })),
+      }));
+
+      minH = updateResults(H, minH, additiveHammingResults, () => ({
+         ...baseResult,
+         permutationDistance: H,
+         usersData: distances.map((d) => ({
+            user: d.user,
+            userDistance: d.hammingDistance,
+         })),
+      }));
+
+      minMaxH = updateResults(maxh, minMaxH, minmaxHammingResults, () => ({
+         ...baseResult,
+         permutationDistance: maxh,
+         usersData: distances.map((d) => ({
+            user: d.user,
+            userDistance: d.hammingDistance,
+         })),
+      }));
    }
 
    return {
-      permutationResults,
-      additiveRankingIndex,
-      minmaxRankingIndex,
-      hammingRankingIndex,
+      additiveCookResults,
+      minmaxCookResults,
+      additiveHammingResults,
+      minmaxHammingResults,
    };
 }
 
-export function getHammingDistance2(matrix1, matrix2) {
+export function getHammingDistance(matrix1, matrix2) {
    const n = matrix1.length;
 
    const diffs = [];
@@ -147,29 +173,4 @@ export function getHammingDistance2(matrix1, matrix2) {
    }
 
    return diffs;
-}
-
-export async function getHammingDistance(id1, id2) {
-   const matrix1 = await matricesService.getMatrixById(id1);
-   const matrix2 = await matricesService.getMatrixById(id2);
-   const n = matrix1.length;
-
-   const diffs = [];
-   const vector1 = [];
-   const vector2 = [];
-
-   for (let i = 0; i < n - 1; ++i) {
-      for (let j = i + 1; j < n; ++j) {
-         vector1.push(matrix1[i][j]);
-         vector2.push(matrix2[i][j]);
-         const diff = Math.abs(matrix1[i][j] - matrix2[i][j]);
-         diffs.push(diff);
-      }
-   }
-
-   return {
-      vector1,
-      vector2,
-      diffs,
-   };
 }
