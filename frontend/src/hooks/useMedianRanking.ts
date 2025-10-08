@@ -23,13 +23,12 @@ export function useMedianRanking() {
    const isReady = useRef<boolean>(false);
 
    useEffect(() => {
-      if (isReady) {
+      if (!isReady.current) {
+         isReady.current = true;
          Promise.all([getCookMetrics(), fetchAlbums()]).then(() => {
             setIsLoading(false);
          });
       }
-
-      isReady.current = true;
    }, []);
 
    useEffect(() => {
@@ -39,7 +38,7 @@ export function useMedianRanking() {
    }, [metrics, isLoading]);
 
    return {
-      isLoading,
+      isMetricsLoading: isLoading,
       albums,
       activeMetric: currMetricKey,
       metrics,

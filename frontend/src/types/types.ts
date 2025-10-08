@@ -25,3 +25,10 @@ export interface PermutationResult {
    }[];
 }
 
+export interface ExpertStatistics {
+   name: string;
+   distance: number;
+   ratio: number;
+   normalized: number;
+   ideal: number;
+}

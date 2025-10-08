@@ -1,33 +1,5 @@
 import * as matricesService from "./matricesService.js";
-
-function* generatePermutations(N) {
-   const arr = Array.from({ length: N }, (_, i) => i + 1);
-   yield [...arr];
-   while (nextPermutation(arr)) {
-      yield [...arr];
-   }
-}
-
-function nextPermutation(arr) {
-   let i = arr.length - 2;
-   while (i >= 0 && arr[i] >= arr[i + 1]) i--;
-   if (i < 0) return false;
-
-   let j = arr.length - 1;
-   while (arr[j] <= arr[i]) j--;
-
-   [arr[i], arr[j]] = [arr[j], arr[i]];
-
-   let left = i + 1,
-      right = arr.length - 1;
-   while (left < right) {
-      [arr[left], arr[right]] = [arr[right], arr[left]];
-      left++;
-      right--;
-   }
-
-   return true;
-}
+import * as permutationService from "./permutationsService.js";
 
 function ranksToComparisonMatrix(ranks) {
    const n = ranks.length;
@@ -62,7 +34,7 @@ export async function getCookDistance() {
    let additiveHammingResults = [];
    let minmaxHammingResults = [];
 
-   for (const permutation of generatePermutations(albumsNumber)) {
+   for (const permutation of permutationService.generatePermutations(albumsNumber)) {
       let L = 0; // sumCook
       let H = 0; // sumHamming
       let maxl = -Infinity; // maxCook
@@ -156,7 +128,74 @@ export async function getCookDistance() {
    };
 }
 
-export function getHammingDistance(matrix1, matrix2) {
+function findAverageUserDistance(allPermutations) {
+   const userStats = {};
+
+   for (const permutationResult of allPermutations) {
+      for (const userData of permutationResult.usersData) {
+         const userName = userData.user;
+         const distance = userData.userDistance;
+
+         if (!userStats[userName]) {
+            userStats[userName] = {
+               totalDistance: 0,
+               count: 0,
+            };
+         }
+
+         userStats[userName].totalDistance += distance;
+         userStats[userName].count += 1;
+      }
+   }
+
+   const averageDistances = {};
+   for (const userName in userStats) {
+      const stats = userStats[userName];
+      averageDistances[userName] = stats.totalDistance / stats.count;
+   }
+
+   return averageDistances;
+}
+
+export async function getExpertsStatistics(metricData) {
+   const results = [];
+
+   const averagedData = findAverageUserDistance(metricData);
+
+   const entries = Object.entries(averagedData);
+
+   const distancesSum = entries.reduce((sum, [, distance]) => sum + distance, 0);
+
+   const ratios = entries.map(([name, distance]) => ({
+      name,
+      distance,
+      ratio: distancesSum / distance,
+   }));
+
+   const ratiosSum = ratios.reduce((sum, { ratio }) => sum + ratio, 0);
+
+   const normalizedValues = ratios.map((row) => ({
+      ...row,
+      normalized: row.ratio / ratiosSum,
+   }));
+
+   const normalizedMax = Math.max(...normalizedValues.map(({ normalized }) => normalized));
+
+   normalizedValues.forEach((r) => {
+      const ideal = r.normalized / normalizedMax;
+      results.push({
+         name: r.name,
+         distance: r.distance,
+         ratio: r.ratio,
+         normalized: r.normalized,
+         ideal,
+      });
+   });
+
+   return results;
+}
+
+function getHammingDistance(matrix1, matrix2) {
    const n = matrix1.length;
 
    const diffs = [];

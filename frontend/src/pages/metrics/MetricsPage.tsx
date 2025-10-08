@@ -1,16 +1,14 @@
-import { useEffect } from "react";
 import "./metricsPage.css";
 import PermutationsTable from "../../components/permutationsTable/PermutationsTable";
 
-import { MetricNames, useMedianRanking } from "../../hooks/useMedianRanking";
+import { MetricNames } from "../../hooks/useMedianRanking";
 import LoadingScreen from "../../components/loadingScreen/LoadingScreen";
+import ExpertsStatistics from "../../components/expertsStatistics/ExpertsStatistics";
+import { useMetrics } from "../../hooks/useMetrics";
 
 const MetricsPage = () => {
-   const { isLoading, albums, activeMetric, metrics, setCurrMetricKey } = useMedianRanking();
-
-   useEffect(() => {
-      metrics;
-   }, [isLoading, metrics]);
+   const { isLoading, albums, activeMetric, metrics, expertsStatistics, setCurrMetricKey } =
+      useMetrics();
 
    return (
       <>
@@ -33,14 +31,12 @@ const MetricsPage = () => {
                </div>
 
                <div className="metrics-page__content">
-                  {metrics[activeMetric].length > 0 ? (
-                     <div className="metrics-page__table-container">
-                        <PermutationsTable albums={albums} metric={metrics[activeMetric]} />
-                     </div>
-                  ) : (
-                     <p>Немає даних для цієї метрики.</p>
-                  )}
+                  <div className="metrics-page__table-container">
+                     <PermutationsTable albums={albums} metric={metrics[activeMetric]} />
+                  </div>
                </div>
+
+               <ExpertsStatistics expertsStats={expertsStatistics}></ExpertsStatistics>
             </section>
          )}
       </>
